@@ -1,0 +1,54 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block title %}Главная страница{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'main/home.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="content">
+            <div class="offer">
+                <span class="tag">Специальное Предложение</span>
+                <h1>На Мобильные Телефоны <br> Распродажа До 30% Скидки</h1>
+                <p>Start From 59 999.00 ₸</p>
+                <a href="#" class="buy-btn">Делать Покупки Сейчас</a>
+            </div>
+            <div class="image">
+                <img src="{% static 'main/assets/img/laptop.png' %}" alt="Ноутбук">
+            </div>
+        </div>
+        <div class="sidebar">
+            <button class="menu-btn">☰ Наши Категории</button>
+            <ul class="dropdown">
+                <li><img src="{% static 'main/assets/svg/home/smartphone.svg' %}" alt="Smartphone" /> Сотовый Телефон</li>
+                <li><img src="{% static 'main/assets/svg/home/washing-machine.svg' %}" alt="Washing Machine" /> Техника для дома</li>
+                <li><img src="{% static 'main/assets/svg/home/pc.svg' %}" alt="PC" /> Компьютер и Ноутбук</li>
+                <li><img src="{% static 'main/assets/svg/home/desktop.svg' %}" alt="Desktop" /> Телевизоры и аксессуары к ТВ</li>
+                <li><img src="{% static 'main/assets/svg/home/gamepad.svg' %}" alt="Gamepad" /> Игры и Консоли</li>
+                <li><img src="{% static 'main/assets/svg/home/printer.svg' %}" alt="Printer" /> Офисная техника</li>
+                <li><img src="{% static 'main/assets/svg/home/discount.svg' %}" alt="Discount" /> Продукт со Скидкой</li>
+            </ul>
+        </div>
+    </div>
+    <div class="brands">
+        <div><h6>sdfsd</h6></div>
+        <div><h6>sdfsd</h6></div>
+        <div><h6>sdfsd</h6></div>
+        <div><h6>sdfsd</h6></div>
+        <div><h6>sdfsd</h6></div>
+        
+    </div>   
+    
+    
+    <script>
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            let dropdown = document.querySelector('.dropdown');
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+    </script>
+</body>
+
+</html>
+{% endblock %}
