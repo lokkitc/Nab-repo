@@ -1,0 +1,37 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block title %}Продукт{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'main/product.css' %}">
+{% endblock %}
+
+{% block content %}
+    
+<div class="product-container">
+    <div class="product-image">
+        <img src="product.jpg" alt="Пароварка Rondell">
+    </div>
+    <div class="product-details">
+        <div class="product-title">Пароварка трехуровневая 26см Rondell RDS-1103</div>
+        <div class="product-price">62 990 ₸</div>
+        <div class="buy-buttons">
+            <button class="buy-now">Купить сейчас</button>
+            <button class="add-to-cart">В корзину</button>
+        </div>
+        <div class="product-info">
+            <p><strong>Тип:</strong> Мантоварка</p>
+            <p><strong>Объем:</strong> 5.5 л</p>
+            <p><strong>Количество секций:</strong> 3</p>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelector('.buy-now').addEventListener('click', function() {
+        alert('Вы купили товар!');
+    });
+    document.querySelector('.add-to-cart').addEventListener('click', function() {
+        alert('Товар добавлен в корзину!');
+    });
+</script>
+{% endblock %}

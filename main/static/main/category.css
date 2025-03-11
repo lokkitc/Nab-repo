@@ -1,0 +1,58 @@
+
+.category-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+.product-grid {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.product-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    width: 200px;
+    height: 320px; /* Сделал чуть выше для баланса */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px; /* Фиксированная высота */
+    object-fit: cover; /* Обрезка изображения, чтобы сохранить пропорции */
+    border-radius: 5px;
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.product-price {
+    color: #28a745;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.buy-button {
+    background-color: #434377;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.buy-button:hover {
+    background-color: #292949;
+}

@@ -6,3 +6,7 @@ def home(request):
 
 def product(request, slug):
     return render(request, 'main/product.html', {'slug': slug})
+
+def category(request, slug):
+    return render(request, 'main/category.html', {'slug': slug})
+

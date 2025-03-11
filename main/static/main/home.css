@@ -3,9 +3,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: top;
-    margin-top: 20px;
-    margin-left:100px;
-    margin-right:100px;
+
     /* background-color: #BAC3D2; */
     gap: 20px;
 

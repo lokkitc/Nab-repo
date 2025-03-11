@@ -72,7 +72,11 @@ nav {
     background: #e0e0e0;
 }
 
-
+.container {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 20px;
+}
 
 nav {
     background: #434377;
@@ -97,7 +101,11 @@ nav ul li {
     cursor: pointer;
 }
 
-
+.container {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 20px;
+}
 
 
 .content {
@@ -137,11 +145,12 @@ nav ul li {
     padding: 20px;
 }
 
-.container {
+/* .container {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     flex-wrap: wrap;
-}
+} */
 
 .footer-section {
     width: 18%;
@@ -206,7 +215,7 @@ nav ul li {
         max-width: 100%;
     }
 
-
+  
 }
 
 @media (max-width: 768px) {

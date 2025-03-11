@@ -1,0 +1,66 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+{% block title %}Продукт{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'main/category.css' %}">
+{% endblock %}
+
+{% block content %}
+    
+    <div class="category-title">Ноутбуки и Компьютеры</div>
+    <div class="product-grid">
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://tse1.mm.bing.net/th?id=OIP.M7KWBz_xHjGt7YBzuELbawHaHa&pid=Api" alt="Ноутбук Lenovo Legion 5">
+                <div class="product-name">Lenovo Legion 5</div>
+                <div class="product-price">531 480 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="product-card">
+                <img src="https://tse2.mm.bing.net/th?id=OIP.EhZu77aXq4X7dsvGeR9zUAHaFc&pid=Api" alt="Ноутбук Asus ROG Strix G16">
+                <div class="product-name">Asus ROG Strix G16</div>
+                <div class="product-price">1 099 800 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="product-card">
+                <img src="https://tse2.mm.bing.net/th?id=OIP.Q9D2guzRQ5CE8J9VaG7eoQHaHa&pid=Api" alt="Системный блок Asus">
+                <div class="product-name">Системный блок Asus</div>
+                <div class="product-price">439 890 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="product-card">
+                <img src="https://tse1.mm.bing.net/th?id=OIP.UE1VmMWXGUYRNy4Tj76mwQHaHa&pid=Api" alt="Моноблок HP 24">
+                <div class="product-name">Моноблок HP 24</div>
+                <div class="product-price">316 980 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+            <!-- Дополнительные продукты -->
+            <div class="product-card">
+                <img src="https://example.com/laptop3.jpg" alt="Ноутбук Dell XPS 15">
+                <div class="product-name">Dell XPS 15</div>
+                <div class="product-price">850 000 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="product-card">
+                <img src="https://example.com/pc2.jpg" alt="Системный блок HP Omen">
+                <div class="product-name">Системный блок HP Omen</div>
+                <div class="product-price">620 000 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="product-card">
+                <img src="https://example.com/monitor2.jpg" alt="Монитор Samsung Odyssey G9">
+                <div class="product-name">Монитор Samsung Odyssey G9</div>
+                <div class="product-price">500 000 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+            <div class="product-card">
+                <img src="https://example.com/laptop4.jpg" alt="Ноутбук Apple MacBook Pro 16">
+                <div class="product-name">Apple MacBook Pro 16</div>
+                <div class="product-price">1 200 000 ₸</div>
+                <button class="buy-button">Купить</button>
+            </div>
+        </div>
+        
+    </div>
+{% endblock %}
