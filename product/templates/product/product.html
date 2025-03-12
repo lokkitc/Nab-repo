@@ -1,0 +1,121 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'main/product.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main class="product-container">
+        <div class="product-gallery">
+            <div class="badges">
+                <span class="badge purple">0-0-24</span>
+                <span class="badge orange">0 - 0 - 24</span>
+            </div>
+            
+            <div class="thumbnails">
+                <div class="thumb active">
+                    <img src="https://picsum.photos/80/80?random=1" alt="Пароварка вид 1">
+                </div>
+                <div class="thumb">
+                    <img src="https://picsum.photos/80/80?random=2" alt="Пароварка вид 2">
+                </div>
+                <div class="thumb">
+                    <img src="https://picsum.photos/80/80?random=3" alt="Пароварка вид 3">
+                </div>
+                <div class="thumb">
+                    <img src="https://picsum.photos/80/80?random=4" alt="Пароварка вид 4">
+                </div>
+            </div>
+            
+            <div class="main-image">
+                <img src="https://picsum.photos/500/500?random=5" alt="Пароварка трехуровневая">
+            </div>
+        </div>
+
+        <div class="product-info">
+            <div class="product-header">
+                <h1>Пароварка трехуровневая 26см Rondell RDS-1103</h1>
+                <div class="rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="reviews">(4)</span>
+                </div>
+            </div>
+
+            <div class="characteristics">
+                <h2>Характеристики:</h2>
+                <div class="char-item">
+                    <span class="char-name">Тип</span>
+                    <span class="char-value">Мантоварка</span>
+                </div>
+                <div class="char-item">
+                    <span class="char-name">Объем</span>
+                    <span class="char-value">5.5 л</span>
+                </div>
+                <div class="char-item">
+                    <span class="char-name">Количество секций</span>
+                    <span class="char-value">3</span>
+                </div>
+                <a href="#" class="more-chars">Все характеристики</a>
+            </div>
+        </div>
+
+        <div class="product-purchase">
+            <div class="product-code">
+                <span>Артикул: 262550</span>
+                <div class="price-guarantee">
+                    <img src="{% static 'main/assets/svg/product/guarantee.svg' %}" alt="Гарантия">
+                    <span>Гарантия низкой цены</span>
+                </div>
+            </div>
+
+            <div class="price-block">
+                <div class="main-price">62 990 ₸</div>
+                <div class="bonus">до 3 149 бонусов</div>
+            </div>
+
+            <div class="payment-options">
+                <div class="credit">
+                    <span>В кредит</span>
+                    <span class="amount">2 038 ₸ × 60 мес</span>
+                </div>
+                <div class="installment">
+                    <span>В рассрочку</span>
+                    <span class="amount">2 625 ₸ × 24 мес</span>
+                </div>
+            </div>
+
+            <div class="purchase-buttons">
+                <button class="btn-buy-now">Купить сейчас</button>
+                <button class="btn-add-cart">В корзину</button>
+            </div>
+
+            <div class="delivery-info">
+                <div class="pickup">
+                    <img src="{% static 'main/assets/svg/product/map.svg' %}" alt="Самовывоз">
+                    <span>Самовывоз: 11 марта, из 15 магазинов</span>
+                </div>
+                <div class="delivery">
+                    <img src="{% static 'main/assets/svg/product/delivery.svg' %}" alt="Доставка">
+                    <span>Доставка: 11 марта</span>
+                </div>
+            </div>
+
+            <div class="product-actions">
+                <button class="btn-favorite">
+                    <img src="{% static 'main/assets/svg/product/favorite.svg' %}" alt="В избранное">
+                    <span>В избранное</span>
+                </button>
+                <button class="btn-share">
+                    <img src="{% static 'main/assets/svg/product/share.svg' %}" alt="Поделиться">
+                    <span>Поделиться</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+ 
+</body>
+</html>
+
+{% endblock %}

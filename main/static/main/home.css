@@ -11,7 +11,7 @@
 
 .dropdown li {
     padding: 10px;
-    color: white;
+    color: var(--text-color);
     cursor: pointer;
     transition: background 0.3s;
 }
@@ -20,7 +20,7 @@
     height: 20px;
 }
 .dropdown li:hover {
-    background: #555;
+    background: var(--primary-hover);
 }
 .menu-btn {
     cursor: pointer;
@@ -28,7 +28,7 @@
     padding: 10px;
     border: none;
     background: transparent;
-    color: white;
+    color: var(--text-color);
     text-align: left;
     width: 100%;
 }
@@ -44,8 +44,8 @@
 .sidebar {
     width: 100%;
     max-width: 300px;
-    background: #434377;
-    color: white;
+    background: var(--primary-color);
+    color: var(--text-color);
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -64,10 +64,10 @@
     height: 30px;
     width: 95%;
     padding: 10px;
-    background-color: #e0e0e0;
+    background-color: var(--button-color);
     margin-bottom: 5px;
     cursor: pointer;
-    color: #000;
+    color: var(--secondary-color);
     font-family: 'Poppins', sans-serif;
 }
 
@@ -83,34 +83,9 @@
     display: flex;
     flex-direction: row;
     padding: 20px;
-    background-color: #BAC3D2;
+    background-color: var(--header-color);
     justify-content: space-between;
 }
 
 
 
-@media (max-width: 1024px) {
-
-    .container-flex {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .sidebar {
-        max-width: 100%;
-    }
-}
-
-@media (max-width: 768px) {
-    
-    .sidebar {
-        max-width: 100%;
-        text-align: center;
-    }
-
-    .sidebar ul li {
-        display: inline-block;
-        margin: 5px;
-    }
-}

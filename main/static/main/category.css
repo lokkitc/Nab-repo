@@ -1,22 +1,23 @@
-
 .category-title {
     font-size: 24px;
     font-weight: bold;
 }
+
 .product-grid {
+    padding: 5px 5px 5px 5px;
     display: flex;
     overflow-x: auto;
     gap: 20px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .product-card {
-    background: #fff;
+    background: var(--background-color);
     padding: 15px;
-    border-radius: 8px;
-    width: 200px;
-    height: 320px; /* Сделал чуть выше для баланса */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 190px;
+    height: 390px;
+    box-shadow: 0 0px 4px var(--secondary-color);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -25,34 +26,53 @@
 
 .product-card img {
     width: 100%;
-    height: 150px; /* Фиксированная высота */
-    object-fit: cover; /* Обрезка изображения, чтобы сохранить пропорции */
+    height: 150px;
+    object-fit: cover;
     border-radius: 5px;
 }
 
 .product-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     margin: 10px 0;
 }
 
+.product-description {
+    font-size: 14px;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
 .product-price {
-    color: #28a745;
+    color: var(--primary-color);
     font-size: 16px;
     font-weight: bold;
 }
 
 .buy-button {
-    background-color: #434377;
-    color: white;
+    height: 20px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
     border: none;
     padding: 10px;
     margin-top: 10px;
     cursor: pointer;
-    border-radius: 5px;
-    width: 100%;
+    border-radius: 2px;
+    /* width: 100%; */
+}
+
+.add-to-cart-button {
+    height: 20px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    /* width: 100%; */
 }
 
 .buy-button:hover {
-    background-color: #292949;
+    background-color: var(--primary-hover);
 }

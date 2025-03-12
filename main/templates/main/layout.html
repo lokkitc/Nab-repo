@@ -1,11 +1,11 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}{% endblock %}</title>
+    <title>{{title|default:"NAB TECH"}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
     {% block css_files %}{% endblock %}
     <link rel="stylesheet" href="{% static 'main/layout.css' %}" />
@@ -15,30 +15,30 @@
     <header>
         <div class="header-container">
             <div class="top-bar">
-                <p>🚚 World's Fastest Online Shopping Destination</p>
+                <p>🚚 Самый быстрый онлайн-магазин в мире</p>
                 <div class="lang-currency">
-                    <span>English ▼</span>
+                    <span>Русский ▼</span>
                     <span>|</span>
                     <span>₸ KZT ▼</span>
                 </div>
             </div>
             <div class="main-header">
                 <div class="logo">
-                    <img src="{% static 'main/assets/img/header-logo.png' %}" alt="NAB TECH Logo" class="logo-img" />
+                    <img src="{% static 'main/assets/img/header-logo.png' %}" alt="Логотип NAB TECH" class="logo-img" />
                 </div>
                 <div class="search-bar">
                     <select>
-                        <option>All Categories</option>
+                        <option>Все категории</option>
                     </select>
-                    <input type="text" placeholder="Search here....." />
+                    <input type="text" placeholder="Поиск..." />
                     <button class="search-button">
-                        <img src="{% static 'main/assets/svg/layout/search.svg' %}" alt="Search" />
+                        <img src="{% static 'main/assets/svg/layout/search.svg' %}" alt="Поиск" />
                         <span>Поиск</span>
                     </button>
                 </div>
                 <div class="search-icons">
-                    <img src="{% static 'main/assets/svg/layout/user.svg' %}" alt="User" />
-                    <img src="{% static 'main/assets/svg/layout/cart.svg' %}" alt="Cart" />
+                    <img src="{% static 'main/assets/svg/layout/user.svg' %}" alt="Пользователь" />
+                    <img src="{% static 'main/assets/svg/layout/cart.svg' %}" alt="Корзина" />
                 </div>
             </div>
             <nav>
@@ -47,12 +47,12 @@
                     <span>+7 (777)-111-11-11</span>
                 </div>
                 <ul>
-                    <li>Home</li>
-                    <li>Shop</li>
-                    <li>Blog</li>
-                    <li>About</li>
-                    <li>Pages</li>
-                    <li>Brand</li>
+                    <li><a href="{% url 'home' %}" >Главная</a></li>
+                    <li><a href="{% url 'category' slug='smartphone' %}" >Магазин</a></li>
+                    <li><a href="#" >Блог</a></li>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#" >Страницы</a></li>
+                    <li><a href="#" >Бренды</a></li>
                 </ul>
                 <div class="social-icons">
                     <img src="{% static 'main/assets/svg/layout/facebook.svg' %}" alt="Facebook" />
@@ -71,11 +71,11 @@
     </div>
     
     <footer class="footer">
-        <div class="container">
+        <div class="footer-container">
             <div class="footer-section">
                 <h4>ИНФОРМАЦИЯ О МАГАЗИНЕ</h4>
                 <p>
-                    📍 Abay 52g<br>
+                    📍 Абая 52г<br>
                     📞 +7 (777)-111-11-11<br>
                     ✉️ intc.@gmail.com<br>
                     ☎️ (123) 456 789 123
@@ -84,54 +84,54 @@
             <div class="footer-section">
                 <h4>НАША КОМПАНИЯ</h4>
                 <ul>
-                    <li><a href="#">Delivery</a></li>
-                    <li><a href="#">Legal Notice</a></li>
-                    <li><a href="#">Terms & Condition</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Доставка</a></li>
+                    <li><a href="#">Юридическая информация</a></li>
+                    <li><a href="#">Условия и положения</a></li>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Свяжитесь с нами</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>НАШ АККАУНТ</h4>
                 <ul>
-                    <li><a href="#">Personal Info</a></li>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="#">Credit Slip</a></li>
-                    <li><a href="#">Address</a></li>
-                    <li><a href="#">My Wishlist</a></li>
+                    <li><a href="#">Личная информация</a></li>
+                    <li><a href="#">Заказы</a></li>
+                    <li><a href="#">Кредитные квитанции</a></li>
+                    <li><a href="#">Адреса</a></li>
+                    <li><a href="#">Мой список желаний</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>ПРОДУКТЫ</h4>
                 <ul>
-                    <li><a href="#">Price Drop</a></li>
-                    <li><a href="#">New Product</a></li>
-                    <li><a href="#">Best Sales</a></li>
-                    <li><a href="#">Latest Product</a></li>
-                    <li><a href="#">Discount</a></li>
+                    <li><a href="#">Снижение цен</a></li>
+                    <li><a href="#">Новые товары</a></li>
+                    <li><a href="#">Лучшие продажи</a></li>
+                    <li><a href="#">Последние товары</a></li>
+                    <li><a href="#">Скидки</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>ЧАСЫ РАБОТЫ</h4>
                 <p>
-                    Mon - Tues: 8AM - 10PM<br>
-                    Wed - Sat: 9AM - 8PM<br>
-                    Sun: <span class="closed">Closed</span>
+                    Понедельник - Вторник: 8:00 - 22:00<br>
+                    Среда - Суббота: 9:00 - 20:00<br>
+                    Воскресенье: <span class="closed">Закрыто</span>
                 </p>
             </div>
         </div>
         <div class="footer-bottom">
             <div class="logo">
-                <img src="{% static 'main/assets/img/header-logo.png' %}" alt="NAB TECH Logo" class="logo-img" />
+                <img src="{% static 'main/assets/img/header-logo.png' %}" alt="Логотип NAB TECH" class="logo-img" />
             </div>
             <div class="apps">
-                <img src="app-store.png" alt="App Store">
-                <img src="google-play.png" alt="Google Play">
-                <img src="windows-store.png" alt="Windows Store">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Get_it_from_Microsoft_Badge.svg" alt="Microsoft Store">
             </div>
         </div>
         <div class="copyright">
-            Авторские права © 2023 - Программное обеспечение для электронной коммерции от DK Design
+            Авторские права © 2025 - Программное обеспечение для электронной коммерции от Nurken, Ali, Bekzat
         </div>
     </footer>
 </body>

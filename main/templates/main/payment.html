@@ -1,0 +1,58 @@
+{% extends 'main/layout.html' %}
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'main/payment.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="checkout-container">
+      <h1>Оформление заказа</h1>
+      
+      <div class="checkout-section">
+        <div class="section-header">
+          <span class="section-number">1</span>
+          <h2>Контактные данные</h2>
+        </div>
+        
+        <div class="customer-type">
+          <div class="type-option selected">
+            <span class="radio-circle"></span>
+            <span>Частное лицо</span>
+          </div>
+        </div>
+
+        <form class="contact-form">
+          <div class="form-group">
+            <input type="text" placeholder="Ваше имя" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="Телефон" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Электронная почта" required>
+          </div>
+          <button type="submit" class="primary-button">Подтвердить</button>
+        </form>
+      </div>
+
+      <div class="checkout-section">
+        <div class="section-header">
+          <span class="section-number">2</span>
+          <h2>Способ оплаты</h2>
+        </div>
+        
+        <div class="payment-method">
+          <div class="payment-option">
+            <input type="radio" id="kaspi" name="payment" checked>
+            <label for="kaspi">В приложении Kaspi (Kaspi QR)</label>
+          </div>
+        </div>
+
+        <button class="primary-button payment-button">Оплатить</button>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

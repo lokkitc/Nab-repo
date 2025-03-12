@@ -1,8 +1,23 @@
+:root {
+    --primary-color: #434377;
+    --primary-hover: #29294e;
+    --white-color: #ffffff;
+    --text-color: #ffffff;
+    --secondary-color: #000000;
+    --border-color: #dddddd;
+    --header-color: #f8f8f8;
+    --top-bar-color: #f8f8f8;
+    --background-color: #ffffff;
+    --button-color: #f1f1f1;
+    --button-hover: #e0e0e0;
+  }
+
+
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #fff;
+    background-color: var(--background-color);
 }
 
 
@@ -13,7 +28,7 @@ nav {
 }
 
 .top-bar {
-    background: #f8f8f8;
+    background: var(--top-bar-color);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,8 +39,8 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
-    border-bottom: 2px solid #ddd;
+    background: var(--white-color);
+    border-bottom: 2px solid var(--border-color);
     flex-wrap: wrap;
 }
 
@@ -33,7 +48,7 @@ nav {
     display: flex;
     width: 100%;
     max-width: 1000px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--button-hover);
     border-radius: 5px;
     height: 40px;
     overflow: hidden;
@@ -57,7 +72,7 @@ nav {
 
 .search-bar button {
     padding: 10px;
-    background: #f1f1f1;
+    background: var(--button-color);
     border: none;
     cursor: pointer;
     transition: background 0.3s;
@@ -69,7 +84,7 @@ nav {
 }
 
 .search-bar button:hover {
-    background: #e0e0e0;
+    background: var(--button-hover);
 }
 
 .container {
@@ -79,8 +94,8 @@ nav {
 }
 
 nav {
-    background: #434377;
-    color: white;
+    background: var(--primary-color);
+    color: var(--white-color);
     height: auto;
     display: flex;
     flex-wrap: wrap;
@@ -100,6 +115,19 @@ nav ul li {
     margin: 10px;
     cursor: pointer;
 }
+nav ul li a {
+    text-decoration: none;
+    color: var(--white-color);
+    font-family: 'Poppins', sans-serif;
+}
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 20px;
+}
 
 .container {
     margin-left: 100px;
@@ -114,7 +142,7 @@ nav ul li {
     display: flex;
     flex-direction: row;
     padding: 20px;
-    background-color: #BAC3D2;
+    background-color: var(--background-color);
     justify-content: space-between;
 }
 
@@ -141,16 +169,10 @@ nav ul li {
 }
 
 .footer {
-    background: #f4f4f4;
+    background: var(--background-color);
     padding: 20px;
+    margin-top: 20px;
 }
-
-/* .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-wrap: wrap;
-} */
 
 .footer-section {
     width: 18%;
@@ -174,7 +196,7 @@ nav ul li {
 
 .footer-section ul li a {
     text-decoration: none;
-    color: #333;
+    color: var(--secondary-color);
 }
 
 .footer-bottom {
@@ -188,7 +210,10 @@ nav ul li {
 
 .apps img {
     height: 30px;
+    margin-top: 20px;
     margin-right: 10px;
+    margin-left: 10px;
+    margin-bottom: 20px;
 }
 
 .copyright {
