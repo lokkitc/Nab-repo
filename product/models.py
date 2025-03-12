@@ -30,6 +30,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     image = models.ImageField(upload_to='products/%Y/%m/%d/', blank=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    characteristics = models.JSONField(default=dict, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

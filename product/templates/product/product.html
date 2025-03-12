@@ -2,67 +2,90 @@
 {% load static %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'main/product.css' %}">
+    <link rel="stylesheet" href="{% static 'product/product.css' %}">
 {% endblock %}
 
 {% block content %}
     <main class="product-container">
         <div class="product-gallery">
             <div class="badges">
-                <span class="badge purple">0-0-24</span>
-                <span class="badge orange">0 - 0 - 24</span>
+                {% if product.status == 'published' %}
+                    <span class="badge purple">В продаже</span>
+                {% endif %}
+                {% if not product.is_in_stock %}
+                    <span class="badge orange">Нет в наличии</span>
+                {% endif %}
             </div>
             
             <div class="thumbnails">
-                <div class="thumb active">
-                    <img src="https://picsum.photos/80/80?random=1" alt="Пароварка вид 1">
-                </div>
-                <div class="thumb">
-                    <img src="https://picsum.photos/80/80?random=2" alt="Пароварка вид 2">
-                </div>
-                <div class="thumb">
-                    <img src="https://picsum.photos/80/80?random=3" alt="Пароварка вид 3">
-                </div>
-                <div class="thumb">
-                    <img src="https://picsum.photos/80/80?random=4" alt="Пароварка вид 4">
-                </div>
+                {% if product.image %}
+                    <div class="thumb active">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    </div>
+                {% else %}
+                    <div class="thumb active">
+                        <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
+                    </div>
+                {% endif %}
             </div>
             
             <div class="main-image">
-                <img src="https://picsum.photos/500/500?random=5" alt="Пароварка трехуровневая">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                {% else %}
+                    <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
+                {% endif %}
             </div>
         </div>
 
         <div class="product-info">
             <div class="product-header">
-                <h1>Пароварка трехуровневая 26см Rondell RDS-1103</h1>
+                <h1>{{ product.name }}</h1>
                 <div class="rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="reviews">(4)</span>
+                    {% with product.reviews.all as reviews %}
+                        <span class="stars">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= reviews.first.rating %}
+                                    ★
+                                {% else %}
+                                    ☆
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        <span class="reviews">({{ reviews.count }})</span>
+                    {% endwith %}
                 </div>
             </div>
 
             <div class="characteristics">
                 <h2>Характеристики:</h2>
+               
                 <div class="char-item">
-                    <span class="char-name">Тип</span>
-                    <span class="char-value">Мантоварка</span>
+                    <span class="char-name">Категория</span>
+                    <span class="char-value">{{ product.category.name }}</span>
                 </div>
                 <div class="char-item">
-                    <span class="char-name">Объем</span>
-                    <span class="char-value">5.5 л</span>
+                    <span class="char-name">Наличие</span>
+                    <span class="char-value">{% if product.is_in_stock %}В наличии ({{ product.stock }} шт.){% else %}Нет в наличии{% endif %}</span>
                 </div>
-                <div class="char-item">
-                    <span class="char-name">Количество секций</span>
-                    <span class="char-value">3</span>
+                <div class="description">
+                    {{ product.description|linebreaks }}
                 </div>
                 <a href="#" class="more-chars">Все характеристики</a>
+                {% if product.characteristics %}
+                {% for key, value in product.characteristics.items %}
+                    <div class="char-item">
+                        <span class="char-name">{{ key }}</span>
+                        <span class="char-value">{{ value }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
             </div>
         </div>
 
         <div class="product-purchase">
             <div class="product-code">
-                <span>Артикул: 262550</span>
+                <span>Артикул: {{ product.id }}</span>
                 <div class="price-guarantee">
                     <img src="{% static 'main/assets/svg/product/guarantee.svg' %}" alt="Гарантия">
                     <span>Гарантия низкой цены</span>
@@ -70,34 +93,34 @@
             </div>
 
             <div class="price-block">
-                <div class="main-price">62 990 ₸</div>
-                <div class="bonus">до 3 149 бонусов</div>
+                <div class="main-price">{{ product.price }} ₸</div>
+                <div class="bonus">до {{ bonus }} бонусов</div>
             </div>
 
             <div class="payment-options">
                 <div class="credit">
                     <span>В кредит</span>
-                    <span class="amount">2 038 ₸ × 60 мес</span>
+                    <span class="amount">{{ credit_monthly }} ₸ × 60 мес</span>
                 </div>
                 <div class="installment">
                     <span>В рассрочку</span>
-                    <span class="amount">2 625 ₸ × 24 мес</span>
+                    <span class="amount">{{ installment_monthly }} ₸ × 24 мес</span>
                 </div>
             </div>
 
             <div class="purchase-buttons">
-                <button class="btn-buy-now">Купить сейчас</button>
-                <button class="btn-add-cart">В корзину</button>
+                <button class="btn-buy-now" {% if not product.is_in_stock %}disabled{% endif %}>Купить сейчас</button>
+                <button class="btn-add-cart" {% if not product.is_in_stock %}disabled{% endif %}>В корзину</button>
             </div>
 
             <div class="delivery-info">
                 <div class="pickup">
                     <img src="{% static 'main/assets/svg/product/map.svg' %}" alt="Самовывоз">
-                    <span>Самовывоз: 11 марта, из 15 магазинов</span>
+                    <span>Самовывоз: {% now "d F" %}</span>
                 </div>
                 <div class="delivery">
                     <img src="{% static 'main/assets/svg/product/delivery.svg' %}" alt="Доставка">
-                    <span>Доставка: 11 марта</span>
+                    <span>Доставка: {% now "d F" %}</span>
                 </div>
             </div>
 
@@ -113,9 +136,4 @@
             </div>
         </div>
     </main>
-
- 
-</body>
-</html>
-
 {% endblock %}

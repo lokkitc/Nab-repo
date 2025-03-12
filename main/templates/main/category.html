@@ -7,7 +7,38 @@
 
 {% block content %}
     
-    <div class="category-title">Ноутбуки и Компьютеры</div>
+    <div class="categories-container">
+    <form method="get" action="" class="filter-form">
+        <div class="category-filter">
+            <select name="category">
+                <option value="">Все категории</option>
+                {% for category in categories %}
+                    <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="price-filter">
+            <input type="number" name="priceMin" value="{{ price_min }}" placeholder="Мин. цена">
+            <input type="number" name="priceMax" value="{{ price_max }}" placeholder="Макс. цена">
+        </div>
+        
+        <div class="sorting">
+            <select name="sorting">
+                <option value="">Сортировка</option>
+                <option value="score" {% if sorting == 'score' %}selected{% endif %}>По рейтингу</option>
+                <option value="price_asc" {% if sorting == 'price_asc' %}selected{% endif %}>По возрастанию цены</option>
+                <option value="price_desc" {% if sorting == 'price_desc' %}selected{% endif %}>По убыванию цены</option>
+                <option value="name" {% if sorting == 'name' %}selected{% endif %}>По названию</option>
+                <option value="newest" {% if sorting == 'newest' %}selected{% endif %}>Сначала новые</option>
+            </select>
+        </div>
+        
+        <button type="submit">Применить</button>
+    </form>
+
     <div class="product-grid">
         <div class="product-grid">
             {% for product in products %}
@@ -17,6 +48,9 @@
                         <div class="product-name">{{product.name|truncatechars:20}}</div>
                         <div class="product-description">{{product.description|truncatechars:40}}</div>
                         <div class="product-price">{{product.price}}</div>
+                        <p class="rating">
+                            Рейтинг: {{ product.avg_rating|default:"Нет оценок"|floatformat:1 }}
+                        </p>
                         <a href="{% url 'product_detail' product.name|slugify %}" class="buy-button">Купить</a>
                         <a class="add-to-cart-button">Добавить в корзину</a>
                     </div>
