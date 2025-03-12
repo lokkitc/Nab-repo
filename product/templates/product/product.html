@@ -2,138 +2,133 @@
 {% load static %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'product/product.css' %}">
+<link rel="stylesheet" href="{% static 'product/product.css' %}">
 {% endblock %}
 
 {% block content %}
-    <main class="product-container">
-        <div class="product-gallery">
-            <div class="badges">
-                {% if product.status == 'published' %}
-                    <span class="badge purple">В продаже</span>
-                {% endif %}
-                {% if not product.is_in_stock %}
-                    <span class="badge orange">Нет в наличии</span>
-                {% endif %}
-            </div>
-            
-            <div class="thumbnails">
-                {% if product.image %}
-                    <div class="thumb active">
-                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    </div>
-                {% else %}
-                    <div class="thumb active">
-                        <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
-                    </div>
-                {% endif %}
-            </div>
-            
-            <div class="main-image">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                {% else %}
-                    <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="product-info">
-            <div class="product-header">
-                <h1>{{ product.name }}</h1>
-                <div class="rating">
-                    {% with product.reviews.all as reviews %}
-                        <span class="stars">
-                            {% for i in "12345"|make_list %}
-                                {% if forloop.counter <= reviews.first.rating %}
-                                    ★
-                                {% else %}
-                                    ☆
-                                {% endif %}
-                            {% endfor %}
-                        </span>
-                        <span class="reviews">({{ reviews.count }})</span>
-                    {% endwith %}
-                </div>
-            </div>
-
-            <div class="characteristics">
-                <h2>Характеристики:</h2>
-               
-                <div class="char-item">
-                    <span class="char-name">Категория</span>
-                    <span class="char-value">{{ product.category.name }}</span>
-                </div>
-                <div class="char-item">
-                    <span class="char-name">Наличие</span>
-                    <span class="char-value">{% if product.is_in_stock %}В наличии ({{ product.stock }} шт.){% else %}Нет в наличии{% endif %}</span>
-                </div>
-                <div class="description">
-                    {{ product.description|linebreaks }}
-                </div>
-                <a href="#" class="more-chars">Все характеристики</a>
-                {% if product.characteristics %}
-                {% for key, value in product.characteristics.items %}
-                    <div class="char-item">
-                        <span class="char-name">{{ key }}</span>
-                        <span class="char-value">{{ value }}</span>
-                    </div>
-                {% endfor %}
+<main class="product-container">
+    <div class="product-gallery">
+        <div class="badges">
+            {% if product.status == 'published' %}
+            <span class="badge purple">В продаже</span>
             {% endif %}
+            {% if not product.is_in_stock %}
+            <span class="badge orange">Нет в наличии</span>
+            {% endif %}
+        </div>
+
+        <div class="thumbnails">
+            {% if product.image %}
+            <div class="thumb active">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            </div>
+            {% else %}
+            <div class="thumb active">
+                <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="main-image">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% else %}
+            <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="product-info">
+        <div class="product-header">
+            <h1>{{ product.name }}</h1>
+            <div class="rating">
+                {% with product.reviews.all as reviews %}
+                <span class="stars">
+                    {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= reviews.first.rating %} ★ {% else %} ☆ {% endif %} {% endfor %} </span>
+                        <span class="reviews"> Рейтинг: {{ product.avg_rating|default:"Нет оценок"|floatformat:1 }} ({{ reviews.count }}) отзывов</span>
+                        {% endwith %}
             </div>
         </div>
 
-        <div class="product-purchase">
-            <div class="product-code">
-                <span>Артикул: {{ product.id }}</span>
-                <div class="price-guarantee">
-                    <img src="{% static 'main/assets/svg/product/guarantee.svg' %}" alt="Гарантия">
-                    <span>Гарантия низкой цены</span>
-                </div>
-            </div>
+        <div class="characteristics">
+            <h2>Характеристики:</h2>
 
-            <div class="price-block">
-                <div class="main-price">{{ product.price }} ₸</div>
-                <div class="bonus">до {{ bonus }} бонусов</div>
+            <div class="char-item">
+                <span class="char-name">Категория</span>
+                <span class="char-value">{{ product.category.name }}</span>
             </div>
-
-            <div class="payment-options">
-                <div class="credit">
-                    <span>В кредит</span>
-                    <span class="amount">{{ credit_monthly }} ₸ × 60 мес</span>
-                </div>
-                <div class="installment">
-                    <span>В рассрочку</span>
-                    <span class="amount">{{ installment_monthly }} ₸ × 24 мес</span>
-                </div>
+            <div class="char-item">
+                <span class="char-name">Наличие</span>
+                <span class="char-value">{% if product.is_in_stock %}В наличии ({{ product.stock }} шт.){% else %}Нет в
+                    наличии{% endif %}</span>
             </div>
-
-            <div class="purchase-buttons">
-                <button class="btn-buy-now" {% if not product.is_in_stock %}disabled{% endif %}>Купить сейчас</button>
-                <button class="btn-add-cart" {% if not product.is_in_stock %}disabled{% endif %}>В корзину</button>
+            <div class="description">
+                {{ product.description|linebreaks }}
             </div>
-
-            <div class="delivery-info">
-                <div class="pickup">
-                    <img src="{% static 'main/assets/svg/product/map.svg' %}" alt="Самовывоз">
-                    <span>Самовывоз: {% now "d F" %}</span>
-                </div>
-                <div class="delivery">
-                    <img src="{% static 'main/assets/svg/product/delivery.svg' %}" alt="Доставка">
-                    <span>Доставка: {% now "d F" %}</span>
-                </div>
+            <a href="#" class="more-chars">Все характеристики</a>
+            {% if product.characteristics %}
+            {% for key, value in product.characteristics.items %}
+            <div class="char-item">
+                <span class="char-name">{{ key }}</span>
+                <span class="char-value">{{ value }}</span>
             </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
 
-            <div class="product-actions">
-                <button class="btn-favorite">
-                    <img src="{% static 'main/assets/svg/product/favorite.svg' %}" alt="В избранное">
-                    <span>В избранное</span>
-                </button>
-                <button class="btn-share">
-                    <img src="{% static 'main/assets/svg/product/share.svg' %}" alt="Поделиться">
-                    <span>Поделиться</span>
-                </button>
+    <div class="product-purchase">
+        <div class="product-code">
+            <span>Артикул: {{ product.id }}</span>
+            <div class="price-guarantee">
+                <img src="{% static 'main/assets/svg/product/guarantee.svg' %}" alt="Гарантия">
+                <span>Гарантия низкой цены</span>
             </div>
         </div>
-    </main>
+
+        <div class="price-block">
+            <div class="main-price">{{ product.price }} ₸</div>
+            <div class="bonus">до {{ bonus }} бонусов</div>
+        </div>
+
+        <div class="payment-options">
+            <div class="credit">
+                <span>В кредит</span>
+                <span class="amount">{{ credit_monthly }} ₸ × 60 мес</span>
+            </div>
+            <div class="installment">
+                <span>В рассрочку</span>
+                <span class="amount">{{ installment_monthly }} ₸ × 24 мес</span>
+            </div>
+        </div>
+
+        <div class="purchase-buttons">
+            <button class="btn-buy-now" {% if not product.is_in_stock %}disabled{% endif %}>Купить сейчас</button>
+            <button class="btn-add-cart" {% if not product.is_in_stock %}disabled{% endif %}>В корзину</button>
+        </div>
+
+        <div class="delivery-info">
+            <div class="pickup">
+                <img src="{% static 'main/assets/svg/product/map.svg' %}" alt="Самовывоз">
+                <span>Самовывоз: {% now "d F" %}</span>
+            </div>
+            <div class="delivery">
+                <img src="{% static 'main/assets/svg/product/delivery.svg' %}" alt="Доставка">
+                <span>Доставка: {% now "d F" %}</span>
+            </div>
+        </div>
+
+        <div class="product-actions">
+            <button class="btn-favorite">
+                <img src="{% static 'main/assets/svg/product/favorite.svg' %}" alt="В избранное">
+                <span>В избранное</span>
+            </button>
+            <button class="btn-share">
+                <img src="{% static 'main/assets/svg/product/share.svg' %}" alt="Поделиться">
+                <span>Поделиться</span>
+            </button>
+        </div>
+    </div>
+</main>
 {% endblock %}

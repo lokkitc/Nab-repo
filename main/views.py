@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from product.models import Product, Category, Review, Order, OrderItem
 from django.db.models import Q, Avg
 from django.shortcuts import redirect
+from django.conf import settings
 
 menu = [
     {'title': 'Главная', 'url_name': 'home'},
@@ -48,14 +49,18 @@ def category(request):
         sort_field = sort_mapping.get(sorting)
         if sort_field:
             products = products.order_by(sort_field)
-    
+
+    if not products:
+        products=[]
+        
     context = {
         'categories': categories,
         'products': products,
         'selected_category': selected_category,
         'price_min': price_min,
         'price_max': price_max,
-        'sorting': sorting
+        'sorting': sorting,
+        'MEDIA_URL': settings.MEDIA_URL,
     }
     
     return render(request, 'main/category.html', context)

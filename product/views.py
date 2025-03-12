@@ -1,9 +1,13 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Product
+from .models import Product, Review
 from decimal import Decimal
+from django.db.models import Avg
 
 def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug)
+
+    product = Product.objects.annotate(
+        avg_rating=Avg('reviews__rating')
+    ).get(slug=slug)
     
     price = product.price if isinstance(product.price, Decimal) else Decimal(str(product.price))
     

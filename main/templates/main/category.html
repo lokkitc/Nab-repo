@@ -41,13 +41,14 @@
 
     <div class="product-grid">
         <div class="product-grid">
+            {% if products %}
             {% for product in products %}
                 <div class="product-item">
                     <div class="product-card">
-                        <img src="{{product.image}}" alt="{{product.name}}">
+                        <img src="{{ MEDIA_URL }}{{ product.image }}" alt="{{ product.name }}">
                         <div class="product-name">{{product.name|truncatechars:20}}</div>
                         <div class="product-description">{{product.description|truncatechars:40}}</div>
-                        <div class="product-price">{{product.price}}</div>
+                        <div class="product-price">{{product.price}} ₸</div>
                         <p class="rating">
                             Рейтинг: {{ product.avg_rating|default:"Нет оценок"|floatformat:1 }}
                         </p>
@@ -56,6 +57,9 @@
                     </div>
                 </div>
             {% endfor %}
+            {% else %}
+            <p>Товаров нет</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
