@@ -2,12 +2,32 @@
 {% load static %}
 
 {% block css_files %}
-<link rel="stylesheet" href="{% static 'main/register.css' %}">
+<link rel="stylesheet" href="{% static 'user/login.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container">
-    <div class="checkout-container">
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+      {{ form.username }}
+    </div>
+    <div class="form-group">
+      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+      {{ form.password }}
+    </div>
+    <button type="submit" class="btn btn-primary">Войти</button>
+  </form>
+
+</div>
+
+{% endblock %}
+
+
+
+<!-- <div class="checkout-container"> 
       <h1>Регистрация</h1>
       
       <div class="checkout-section">
@@ -42,7 +62,4 @@
           <button type="submit" class="primary-button">Подтвердить</button>
         </form>
       </div>
-    </div>
-  </div>
-
-{% endblock %}
+    </div> -->

@@ -82,7 +82,7 @@
         <div class="product-code">
             <span>Артикул: {{ product.id }}</span>
             <div class="price-guarantee">
-                <img src="{% static 'main/assets/svg/product/guarantee.svg' %}" alt="Гарантия">
+                <img src="{% static 'product/assets/svg/product/guarantee.svg' %}" alt="Гарантия">
                 <span>Гарантия низкой цены</span>
             </div>
         </div>
@@ -110,22 +110,22 @@
 
         <div class="delivery-info">
             <div class="pickup">
-                <img src="{% static 'main/assets/svg/product/map.svg' %}" alt="Самовывоз">
+                <img src="{% static 'product/assets/svg/product/map.svg' %}" alt="Самовывоз">
                 <span>Самовывоз: {% now "d F" %}</span>
             </div>
             <div class="delivery">
-                <img src="{% static 'main/assets/svg/product/delivery.svg' %}" alt="Доставка">
+                <img src="{% static 'product/assets/svg/product/delivery.svg' %}" alt="Доставка">
                 <span>Доставка: {% now "d F" %}</span>
             </div>
         </div>
 
         <div class="product-actions">
             <button class="btn-favorite">
-                <img src="{% static 'main/assets/svg/product/favorite.svg' %}" alt="В избранное">
+                <img src="{% static 'product/assets/svg/product/favorite.svg' %}" alt="В избранное">
                 <span>В избранное</span>
             </button>
             <button class="btn-share">
-                <img src="{% static 'main/assets/svg/product/share.svg' %}" alt="Поделиться">
+                <img src="{% static 'product/assets/svg/product/share.svg' %}" alt="Поделиться">
                 <span>Поделиться</span>
             </button>
         </div>
