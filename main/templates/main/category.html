@@ -52,7 +52,7 @@
                         <p class="rating">
                             Рейтинг: {{ product.avg_rating|default:"Нет оценок"|floatformat:1 }}
                         </p>
-                        <a href="{% url 'product_detail' product.name|slugify %}" class="buy-button">Купить</a>
+                        <a href="{{ product.get_absolute_url }}" class="buy-button">Купить</a>
                         <a class="add-to-cart-button">Добавить в корзину</a>
                     </div>
                 </div>
