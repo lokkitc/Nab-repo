@@ -99,7 +99,8 @@
 }
 
 .sorting select,
-.category-filter select {
+.category-filter select,
+.brand-filter select {
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;

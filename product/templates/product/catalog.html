@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'main/category.css' %}">
+    <link rel="stylesheet" href="{% static 'product/catalog.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -13,8 +13,16 @@
             <select name="category">
                 <option value="">Все категории</option>
                 {% for category in categories %}
-                    <option value="{{ category.slug }}" {% if selected_category == category.slug %}selected{% endif %}>
+                    <option value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>
                         {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+            <select name="brand">
+                <option value="">Все Бренды</option>
+                {% for brand in brands %}
+                    <option value="{{ brand.id }}" {% if selected_brand == brand.id %}selected{% endif %}>
+                        {{ brand.name }}
                     </option>
                 {% endfor %}
             </select>
@@ -43,9 +51,15 @@
         <div class="product-grid">
             {% if products %}
             {% for product in products %}
+                {% if product.status == 'published' %}
+                {% if product.get_absolute_url %}
                 <div class="product-item">
                     <div class="product-card">
+                        {% if product.image %}
                         <img src="{{ MEDIA_URL }}{{ product.image }}" alt="{{ product.name }}">
+                        {% else %}
+                        <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
+                        {% endif %}
                         <div class="product-name">{{product.name|truncatechars:20}}</div>
                         <div class="product-description">{{product.description|truncatechars:40}}</div>
                         <div class="product-price">{{product.price}} ₸</div>
@@ -56,6 +70,10 @@
                         <a class="add-to-cart-button">Добавить в корзину</a>
                     </div>
                 </div>
+                {% else %}
+                <p>Товара нет</p>
+                {% endif %}
+                {% endif %}
             {% endfor %}
             {% else %}
             <p>Товаров нет</p>
