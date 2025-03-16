@@ -82,6 +82,21 @@ nav {
     font-family: inherit;
 
 }
+.search-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-icons a {
+    text-decoration: none;
+    color: var(--black-color);
+    font-family: inherit;
+}
+.search-bar text {
+    font-family: inherit;
+    
+}
 
 .search-bar button:hover {
     background: var(--button-hover);
@@ -112,7 +127,10 @@ nav ul {
 }
 
 nav ul li {
-    margin: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
     cursor: pointer;
 }
 nav ul li a {

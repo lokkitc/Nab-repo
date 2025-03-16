@@ -1,0 +1,121 @@
+.category-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.product-grid {
+    padding: 5px 5px 5px 5px;
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.product-card {
+    background: var(--background-color);
+    padding: 15px;
+    width: 190px;
+    height: 410px;
+    box-shadow: 0 0px 4px var(--secondary-color);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.product-description {
+    font-size: 14px;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.product-price {
+    color: var(--primary-color);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.buy-button {
+    height: 20px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    /* width: 100%; */
+}
+
+.add-to-cart-button {
+    height: 20px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+    /* width: 100%; */
+}
+
+.buy-button:hover {
+    background-color: var(--primary-hover);
+}
+
+.filter-form {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.price-filter {
+    display: flex;
+    gap: 10px;
+}
+
+.price-filter input {
+    width: 150px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.sorting select,
+.category-filter select,
+.brand-filter select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+button {
+    padding: 8px 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}

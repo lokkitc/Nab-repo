@@ -27,3 +27,7 @@ urlpatterns = [
     path('user/', include('user.urls', namespace='user')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.site.site_header = 'Админка Nabtechshop'
+admin.site.site_title = 'Админка Nabtechshop'
+admin.site.index_title = 'Админка Nabtechshop'

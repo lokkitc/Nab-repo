@@ -1,25 +1,23 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
-from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import redirect
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
 
-from .forms import LoginForm
 
-def login_user(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            user = authenticate(username=cd['username'], password=cd['password'])
-            if user and user.is_active:
-                login(request, user)
-                return redirect('home')
-            else:
-                form.add_error('password', 'Неверный логин или пароль')
-    else:
-        form = LoginForm()
-    return render(request, 'user/login.html', {'form': form})    
+from .forms import LoginUserForm
 
-def logout_user(request):
-    logout(request)
-    return redirect('home')
+class LoginUser(LoginView):
+    form_class =  LoginUserForm
+    template_name = 'user/login.html'
+    extra_context = {'title': 'Авторизация'}
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+
+
+def profile_user(request, pk):
+    return render(request, 'user/profile.html')
+
+
+def cart(request, pk):
+    pass

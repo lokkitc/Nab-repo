@@ -30,7 +30,7 @@ class Category(BaseModel):
         return reverse('product:category_detail', args=[self.slug])
     
     class Meta(BaseModel.Meta):
-        verbose_name_plural = "Categories"
+        verbose_name_plural = "Категории"
 
 class Brand(BaseModel):
     logo = models.ImageField(upload_to='brands/%Y/%m/%d/', blank=True)
@@ -41,7 +41,7 @@ class Brand(BaseModel):
         return reverse('product:brand_detail', args=[self.slug])
     
     class Meta(BaseModel.Meta):
-        verbose_name_plural = "Brands"
+        verbose_name_plural = "Бренды"
 
 class Product(models.Model):
     STATUS_CHOICES = [
@@ -63,7 +63,10 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    
     class Meta:
+        verbose_name = 'Товар'
+        verbose_name_plural = 'Товары'
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['name']),
@@ -102,6 +105,10 @@ class Order(models.Model):
     shipping_address = models.TextField()
     order_date = models.DateTimeField(default=timezone.now)
     
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+    
     def __str__(self) -> str:
         return f"Order #{self.id} by {self.user.username}"
 
@@ -111,6 +118,10 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        verbose_name = 'Товар в заказе'
+        verbose_name_plural = 'Товары в заказах'
     
     def __str__(self) -> str:
         return f"{self.quantity}x {self.product.name} in Order #{self.order.id}"
@@ -128,7 +139,10 @@ class Review(models.Model):
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     
+    
     class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
         unique_together = ['product', 'user']  # One review per user per product
         ordering = ['-created_at']
     

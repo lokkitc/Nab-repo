@@ -37,8 +37,18 @@
                     </button>
                 </div>
                 <div class="search-icons">
-                    <a href="{% url 'user:login' %}"><img src="{% static 'main/assets/svg/layout/user.svg' %}" alt="Пользователь" /></a>
+                    {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                    <a href="{% url 'admin:index' %}"> Админ панель</a>
+                    {% else %}
+                    <a href="{% url 'user:profile' pk=user.id %}">{{ user.username }}</a>
+                    {% endif %}
+                    <a href="{% url 'user:logout' %}">| Выйти</a>
                     <img src="{% static 'main/assets/svg/layout/cart.svg' %}" alt="Корзина" />
+
+                    {% else %}
+                    <a href="{% url 'user:login' %}"> Войти / Регистрация</a>
+                    {% endif %}
                 </div>
             </div>
             <nav>
@@ -47,12 +57,12 @@
                     <span>+7 (777)-111-11-11</span>
                 </div>
                 <ul>
-                    <li><a href="{% url 'home' %}" >Главная</a></li>
-                    <li><a href="{% url 'product:catalog'%}" >Магазин</a></li>
-                    <li><a href="#" >Блог</a></li>
+                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    <li><a href="{% url 'product:catalog'%}">Магазин</a></li>
+                    <li><a href="#">Блог</a></li>
                     <li><a href="#">О нас</a></li>
-                    <li><a href="#" >Страницы</a></li>
-                    <li><a href="#" >Бренды</a></li>
+                    <li><a href="#">Страницы</a></li>
+                    <li><a href="#">Бренды</a></li>
                 </ul>
                 <div class="social-icons">
                     <img src="{% static 'main/assets/svg/layout/facebook.svg' %}" alt="Facebook" />
@@ -69,7 +79,7 @@
         {% block content %}
         {% endblock %}
     </div>
-    
+
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
@@ -125,9 +135,12 @@
                 <img src="{% static 'main/assets/img/header-logo.png' %}" alt="Логотип NAB TECH" class="logo-img" />
             </div>
             <div class="apps">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Play Store">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Get_it_from_Microsoft_Badge.svg" alt="Microsoft Store">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg"
+                    alt="App Store">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg"
+                    alt="Play Store">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f7/Get_it_from_Microsoft_Badge.svg"
+                    alt="Microsoft Store">
             </div>
         </div>
         <div class="copyright">
