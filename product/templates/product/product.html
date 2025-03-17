@@ -5,7 +5,49 @@
 <link rel="stylesheet" href="{% static 'product/css/product.css' %}">
 {% endblock %}
 
+{% block head %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    window.addToCart = function(productId) {
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        console.log('Adding product to cart:', productId);
+        
+        fetch('/product/cart/add/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken
+            },
+            body: JSON.stringify({
+                'product_id': productId,
+                'quantity': 1
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert('Товар добавлен в корзину!');
+            } else {
+                alert(data.error || 'Произошла ошибка при добавлении товара');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Произошла ошибка при добавлении товара в корзину');
+        });
+    }
+});
+</script>
+{% endblock %}
+
 {% block content %}
+{% csrf_token %}
 <main class="product-container">
     <div class="product-gallery">
         
@@ -106,8 +148,21 @@
         </div>
 
         <div class="purchase-buttons">
+            <div class="quantity-selector">
+                <button class="quantity-btn minus" type="button">-</button>
+                <input type="number" 
+                       id="quantity" 
+                       value="1" 
+                       min="1" 
+                       max="{{ product.stock }}"
+                       {% if not product.is_in_stock %}disabled{% endif %}>
+                <button class="quantity-btn plus" type="button">+</button>
+            </div>
             <button class="btn-buy-now" {% if not product.is_in_stock %}disabled{% endif %}>Купить сейчас</button>
-            <button class="btn-add-cart" {% if not product.is_in_stock %}disabled{% endif %}>В корзину</button>
+            <button class="btn-add-cart" 
+                    {% if not product.is_in_stock %}disabled{% endif %} 
+                    data-product-id="{{ product.id }}"
+                    data-stock="{{ product.stock }}">В корзину</button>
         </div>
 
         <div class="delivery-info">
@@ -133,4 +188,137 @@
         </div>
     </div>
 </main>
+
+<script>
+(function() {
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    function handleAddToCart(productId, quantity) {
+        console.log('Attempting to add product:', productId, 'quantity:', quantity);
+        
+        fetch("{% url 'product:add_to_cart' %}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCsrfToken()
+            },
+            body: JSON.stringify({
+                'product_id': productId,
+                'quantity': quantity
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Server response:', response.status, response.statusText);
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert('Товар добавлен в корзину!');
+                // Обновляем максимальное доступное количество
+                const quantityInput = document.getElementById('quantity');
+                quantityInput.max = data.remaining_stock;
+                if (data.remaining_stock === 0) {
+                    const addToCartBtn = document.querySelector('.btn-add-cart');
+                    addToCartBtn.disabled = true;
+                    addToCartBtn.textContent = 'Нет в наличии';
+                }
+            } else {
+                alert(data.error || 'Произошла ошибка при добавлении товара');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Произошла ошибка при добавлении товара в корзину');
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const quantityInput = document.getElementById('quantity');
+        const minusBtn = document.querySelector('.quantity-btn.minus');
+        const plusBtn = document.querySelector('.quantity-btn.plus');
+        const addToCartBtn = document.querySelector('.btn-add-cart');
+
+        // Обработчики кнопок +/-
+        minusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            let max = parseInt(quantityInput.max);
+            if (value < max) {
+                quantityInput.value = value + 1;
+            }
+        });
+
+        // Валидация ввода
+        quantityInput.addEventListener('change', () => {
+            let value = parseInt(quantityInput.value);
+            let max = parseInt(quantityInput.max);
+            let min = parseInt(quantityInput.min);
+
+            if (value > max) {
+                quantityInput.value = max;
+                alert(`Максимальное доступное количество: ${max}`);
+            }
+            if (value < min) {
+                quantityInput.value = min;
+            }
+        });
+
+        // Обработчик добавления в корзину
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                const quantity = parseInt(quantityInput.value);
+                handleAddToCart(productId, quantity);
+            });
+        }
+    });
+})();
+</script>
+
+<style>
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.quantity-selector input {
+    width: 60px;
+    text-align: center;
+    margin: 0 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.quantity-btn:hover {
+    background: #eee;
+}
+
+.quantity-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+</style>
+
 {% endblock %}

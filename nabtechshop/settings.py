@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # 'django.extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,7 +42,8 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'product.apps.ProductConfig',
     'user.apps.UserConfig',
-    
+    'custom_auth.apps.AuthConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -143,6 +145,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'user.authentication.EmailBackend',
+    'custom_auth.authentication.EmailBackend',
 ]
 
+
+AUTH_USER_MODEL = 'user.User'

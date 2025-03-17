@@ -7,27 +7,12 @@
 
 <div class="cart-container">
     <!-- Header -->
-    <header class="header">
-        <div class="header-main">
-            <h1>Корзина Technodom</h1>
-            <span class="items-count">{{ count }} товара</span>
-        </div>
-        <button class="btn-blue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                <polyline points="7 10 12 15 17 10"/>
-                <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            Коммерческое предложение
-        </button>
-    </header>
+
 
     <!-- Actions -->
     <div class="actions">
-        <label class="checkbox-label">
-            <input type="checkbox" class="custom-checkbox">
-            <span>Выбрать все</span>
-        </label>
+        <h1>Корзина</h1>
+        <p>Выберите товары для заказа</p>
         <div class="action-buttons">
             <button class="btn-blue btn-with-icon">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -50,7 +35,7 @@
     <!-- Product List -->
     <div class="product-list">
         {% for item in items %}
-        <div class="product-card">
+        <div class="product-card" data-item-id="{{ item.id }}">
             <div class="product-main">
                 <input type="checkbox" class="product-checkbox custom-checkbox">
                 <div class="product-image">
@@ -146,5 +131,117 @@
         </button>
     </div>
 </div>
+
+<!-- Add this before closing body tag -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle quantity buttons
+    document.querySelectorAll('.quantity-controls').forEach(control => {
+        const minusBtn = control.querySelector('.quantity-btn:first-child');
+        const plusBtn = control.querySelector('.quantity-btn:last-child');
+        const quantitySpan = control.querySelector('.quantity');
+        const itemId = control.closest('.product-card').dataset.itemId;
+
+        minusBtn.addEventListener('click', () => updateQuantity(itemId, -1));
+        plusBtn.addEventListener('click', () => updateQuantity(itemId, 1));
+    });
+
+    // Handle delete buttons
+    document.querySelectorAll('.btn-delete').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const checkedItems = document.querySelectorAll('.product-checkbox:checked');
+            checkedItems.forEach(checkbox => {
+                const productCard = checkbox.closest('.product-card');
+                const itemId = productCard.dataset.itemId;
+                deleteItem(itemId);
+            });
+        });
+    });
+
+    async function updateQuantity(itemId, change) {
+        const productCard = document.querySelector(`[data-item-id="${itemId}"]`);
+        const quantitySpan = productCard.querySelector('.quantity');
+        const currentQuantity = parseInt(quantitySpan.textContent);
+        const newQuantity = currentQuantity + change;
+
+        if (newQuantity < 1) return;
+
+        try {
+            const response = await fetch('/catalog/cart/update/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    quantity: newQuantity
+                })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                quantitySpan.textContent = data.quantity;
+                updateTotals(data.cart_total);
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function deleteItem(itemId) {
+        try {
+            const response = await fetch('/catalog/cart/delete/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    item_id: itemId
+                })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                const productCard = document.querySelector(`[data-item-id="${itemId}"]`);
+                productCard.remove();
+                updateTotals(data.cart_total);
+                updateItemsCount(data.items_count);
+            } else {
+                alert(data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function updateTotals(cartTotal) {
+        document.querySelector('.summary-row .bold').textContent = `${cartTotal} ₸`;
+        document.querySelector('.summary-row.total span:last-child').textContent = `${cartTotal} ₸`;
+    }
+
+    function updateItemsCount(count) {
+        document.querySelector('.btn-delete span').textContent = `Удалить (${count})`;
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
 
 {% endblock %}

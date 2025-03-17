@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('catalog/', include('product.urls', namespace='product')),
     path('user/', include('user.urls', namespace='user')),
-
+    path('auth/', include('custom_auth.urls', namespace='auth')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 admin.site.site_header = 'Админка Nabtechshop'

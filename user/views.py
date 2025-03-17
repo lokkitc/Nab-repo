@@ -4,20 +4,14 @@ from django.urls import reverse_lazy
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from product.models import Order
-from .forms import LoginUserForm, RegisterUserForm, ProfileUserForm, UserPasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import UpdateView, CreateView
 from django.contrib.auth import get_user_model
+from django.views.generic import UpdateView
+from .forms import ProfileUserForm
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
-class LoginUser(LoginView):
-    form_class =  LoginUserForm
-    template_name = 'user/login.html'
-    extra_context = {'title': 'Авторизация'}
-
-    def get_success_url(self):
-        return reverse_lazy('home')
+from django.views.decorators.http import require_POST
+import json
 
 
 def profile_user(request, pk):
@@ -44,14 +38,27 @@ def cart(request, pk):
         }
     return render(request, 'user/cart.html', context)
 
-def logout_user(request):
-    logout(request)
-    return redirect('home')
+
+
+class ProfileUserView(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    form_class = ProfileUserForm
+    template_name = 'user/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['orders'] = Order.objects.filter(user=self.request.user).order_by('-order_date')
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('auth:profile', args=[self.object.pk])
+
+
 
 @login_required
 def update_profile(request):
     if request.method == 'POST':
-        form = ProfileUserForm(request.POST, instance=request.user)
+        form = ProfileUserForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             return JsonResponse({
@@ -68,27 +75,15 @@ def update_profile(request):
     })
 
 
-class RegisterUser(CreateView):
-    model = get_user_model()
-    form_class = RegisterUserForm
-    template_name = 'user/register.html'
-    success_url = reverse_lazy('user:login')
+def profile_view(request):
+    if request.method == 'POST':
+        form = ProfileUserForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('user:profile')
+    else:
+        form = ProfileUserForm(instance=request.user)
     
+    return render(request, 'user/profile.html', {'form': form})
 
-class ProfileUserView(LoginRequiredMixin, UpdateView):
-    model = get_user_model()
-    form_class = ProfileUserForm
-    template_name = 'user/profile.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['orders'] = Order.objects.filter(user=self.request.user).order_by('-order_date')
-        return context
-
-    def get_success_url(self):
-        return reverse_lazy('user:profile', args=[self.object.pk])
-
-class PasswordChangeView(LoginRequiredMixin, PasswordChangeView):
-    form_class = UserPasswordChangeForm
-    success_url = reverse_lazy('user:password_change_done') 
-    template_name = 'user/password_change_form.html'

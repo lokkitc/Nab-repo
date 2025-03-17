@@ -1,25 +1,31 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block css_files %}
-<link rel="stylesheet" href="{% static 'user/css/profile.css' %}">
+<link rel="stylesheet" href="{% static 'auth/css/profile.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-avatar">
-            <img src="{% static 'user/images/default-avatar.png' %}" alt="Фото профиля {{ user.username }}">
+            {% if user.photo %}
+                <img src="{{ user.photo.url }}" alt="Фото профиля {{ user.username }}">
+            {% else %}
+                <img src="{% static 'user/images/default-avatar.png' %}" alt="Фото профиля {{ user.username }}">
+            {% endif %}
         </div>
         <div class="profile-info">
             <h1>{{ user.username|title }}</h1>
             <p class="email">{{ user.email|lower }}</p>
+            <p class="phone">{{ user.phone }}</p>
+            <p class="address">{{ user.address }}</p>
         </div>
     </div>
 
     <div class="profile-content">
         <section class="profile-section">
             <h2>Личная информация</h2>
-            <form id="profile-form" method="POST">
+            <form id="profile-form" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                 <div class="form-group">
@@ -27,18 +33,18 @@
                     {{ field }}
                 </div>
                 {% endfor %}
-                <button type="submit" class="save-btn">Сохранить изменения</button>
+                <button type="submit" class="save-btn" style="background-color: var(--primary-color); color: white;">Сохранить изменения</button>
             </form>
             <br>
             <div class="password-change-link">
 
-                <a href="{% url 'user:password_change' %}" class="btn btn-primary">Сменить пароль</a>
+                <a href="{% url 'auth:password_change' %}" style="color: transparent; color: #000;">Сменить пароль</a>
             </div>
         </section>
 
         <section class="profile-section">
             <h2>История заказов</h2>
-            <div class="orders-list">
+            <div class="orders-list" style="max-height: 600px; overflow-y: auto;">
                 {% if orders %}
                     {% for order in orders %}
                     <article class="order-item">
@@ -51,7 +57,7 @@
                         <div class="order-status" data-status="{{ order.status|lower }}">
                             {{ order.status }}
                         </div>
-                        <div class="order-total">{{ order.total|floatformat:2 }} ₽</div>
+                        <div class="order-total">{{ order.total_amount|floatformat:2 }} ₸</div>
                     </article>
                     {% endfor %}
                 {% else %}

@@ -3,7 +3,11 @@ from django.core.paginator import Paginator
 from django.db.models import Avg
 from django.conf import settings
 from decimal import Decimal
-from .models import Product, Review, Category, Brand
+from .models import Product, Review, Category, Brand, Order, OrderItem
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+import json
 
 BONUS_RATE = Decimal('0.05')
 CREDIT_MONTHS = Decimal('60')
@@ -41,6 +45,8 @@ def catalog(request):
     else:
         brands = Brand.objects.all()
         
+    selected_name = request.GET.get('name')
+    print(f"Selected name: {selected_name}")  # Отладочный вывод
     selected_brands = request.GET.getlist('brand')
     price_min = request.GET.get('priceMin')
     price_max = request.GET.get('priceMax')
@@ -56,6 +62,9 @@ def catalog(request):
     
     if selected_brands:
         products = products.filter(brand__id__in=selected_brands)
+    
+    if selected_name:
+        products = products.filter(name__icontains=selected_name)
     
     try:
         if price_min:
@@ -89,18 +98,162 @@ def catalog(request):
     except:
         page_obj = paginator.page(1)
 
+    # Добавляем проверку на наличие продуктов
+    if not page_obj.object_list:
+        no_products_message = "Нет доступных продуктов по вашему запросу."
+    else:
+        no_products_message = ""
+
     context = {
         'categories': categories,
         'brands': brands,
         'products': page_obj,
         'selected_category': selected_category,
         'selected_brands': selected_brands,
+        'selected_name': selected_name,
         'price_min': price_min,
         'price_max': price_max,
         'sorting': sorting,
         'MEDIA_URL': settings.MEDIA_URL,
         'page_obj': page_obj,
         'is_paginated': page_obj.has_other_pages(),
+        'no_products_message': no_products_message,  # Добавляем сообщение в контекст
     }
     
     return render(request, 'product/catalog.html', context)
+
+@require_POST
+@login_required
+def add_to_cart(request):
+    try:
+        data = json.loads(request.body)
+        product_id = data.get('product_id')
+        quantity = int(data.get('quantity', 1))
+        
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Product not found'})
+        
+        # Проверяем наличие товара
+        if not product.is_in_stock():
+            return JsonResponse({'success': False, 'error': 'Product out of stock'})
+        
+        # Проверяем достаточное ли количество
+        if product.stock < quantity:
+            return JsonResponse({
+                'success': False, 
+                'error': f'Недостаточно товара. Доступно: {product.stock}'
+            })
+        
+        active_order = Order.get_active_order(request.user)
+        
+        if active_order:
+            order = active_order
+        else:
+            order = Order.objects.create(
+                user=request.user,
+                status='pending',
+                shipping_address=''
+            )
+        
+        try:
+            # Проверяем, есть ли уже такой товар в корзине
+            order_item = OrderItem.objects.get(order=order, product=product)
+            # Проверяем возможность добавления количества
+            if product.stock < (order_item.quantity + quantity):
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Недостаточно товара. В корзине: {order_item.quantity}, на складе: {product.stock}'
+                })
+            order_item.quantity += quantity
+            order_item.save()
+        except OrderItem.DoesNotExist:
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity
+            )
+        
+        return JsonResponse({
+            'success': True,
+            'cart_id': order.id,
+            'total_items': order.orderitem_set.count(),
+            'remaining_stock': product.stock
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid JSON'})
+    except ValueError as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@require_POST
+@login_required
+def update_cart_item(request):
+    try:
+        data = json.loads(request.body)
+        item_id = data.get('item_id')
+        quantity = int(data.get('quantity', 1))
+        
+        order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user)
+        product = order_item.product
+        
+        # Check if we have enough stock
+        if product.stock + order_item.quantity < quantity:
+            return JsonResponse({
+                'success': False,
+                'error': f'Недостаточно товара. Доступно: {product.stock + order_item.quantity}'
+            })
+        
+        # Return stock from old quantity
+        product.stock += order_item.quantity
+        product.save()
+        
+        # Update quantity
+        order_item.quantity = quantity
+        order_item.save()
+        
+        return JsonResponse({
+            'success': True,
+            'quantity': order_item.quantity,
+            'total': float(order_item.total),
+            'cart_total': float(order_item.order.total_amount)
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@require_POST
+@login_required
+def delete_cart_item(request):
+    try:
+        data = json.loads(request.body)
+        item_id = data.get('item_id')
+        
+        order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user)
+        
+        # Return stock
+        product = order_item.product
+        product.stock += order_item.quantity
+        product.save()
+        
+        # Get order before deleting item
+        order = order_item.order
+        
+        # Delete item
+        order_item.delete()
+        
+        # Update order total
+        order.total_amount = order.get_total()
+        order.save()
+        
+        return JsonResponse({
+            'success': True,
+            'cart_total': float(order.total_amount),
+            'items_count': order.orderitem_set.count()
+        })
+        
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})

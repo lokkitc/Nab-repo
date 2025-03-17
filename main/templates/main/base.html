@@ -95,10 +95,10 @@
             {% else %}
             <a href="{% url 'user:profile' pk=user.id %}">{{ user.username }}</a>
             {% endif %}
-            <a href="{% url 'user:logout' %}">Выйти</a>
+            <a href="{% url 'auth:logout' %}">Выйти</a>
             {% else %}
-            <a href="{% url 'user:login' %}"> Войти</a>
-            <a href="{% url 'user:register' %}"> Регистрация</a>
+            <a href="{% url 'auth:login' %}"> Войти</a>
+            <a href="{% url 'auth:register' %}"> Регистрация</a>
             {% endif %}
           <button class="header-action-btn" aria-label="user">
             {% if user.is_authenticated %}
@@ -109,11 +109,11 @@
           </button>
 
           <button class="header-action-btn" aria-label="cart item">
-            <data class="btn-text" value="0">567 ₸</data>
+            <data class="btn-text" value="0">{{ user.money }} ₸</data>
 
             <ion-icon name="bag-handle-outline" aria-hidden="true" aria-hidden="true"></ion-icon>
 
-            <span class="btn-badge">{{ count }}</span>
+            <span class="btn-badge">{{ order_count }}</span>
           </button>
 
         </div>
