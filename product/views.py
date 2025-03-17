@@ -33,7 +33,7 @@ def product_detail(request, slug):
 def catalog(request):
 
     categories = Category.objects.all()
-    selected_category = request.GET.get('category')
+    selected_category = str(request.GET.get('category')) if request.GET.get('category') else ''
     if selected_category:
         brands = Brand.objects.filter(
             category__id=selected_category
@@ -41,7 +41,7 @@ def catalog(request):
     else:
         brands = Brand.objects.all()
         
-    selected_brand = request.GET.get('brand')
+    selected_brands = request.GET.getlist('brand')
     price_min = request.GET.get('priceMin')
     price_max = request.GET.get('priceMax')
     sorting = request.GET.get('sorting')
@@ -54,8 +54,8 @@ def catalog(request):
     if selected_category:
         products = products.filter(category__id=selected_category)
     
-    if selected_brand:
-        products = products.filter(brand__id=selected_brand)
+    if selected_brands:
+        products = products.filter(brand__id__in=selected_brands)
     
     try:
         if price_min:
@@ -94,7 +94,7 @@ def catalog(request):
         'brands': brands,
         'products': page_obj,
         'selected_category': selected_category,
-        'selected_brand': selected_brand,
+        'selected_brands': selected_brands,
         'price_min': price_min,
         'price_max': price_max,
         'sorting': sorting,

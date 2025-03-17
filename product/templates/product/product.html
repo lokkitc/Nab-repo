@@ -1,21 +1,14 @@
-{% extends 'main/layout.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 
 {% block css_files %}
-<link rel="stylesheet" href="{% static 'product/product.css' %}">
+<link rel="stylesheet" href="{% static 'product/css/product.css' %}">
 {% endblock %}
 
 {% block content %}
 <main class="product-container">
     <div class="product-gallery">
-        <div class="badges">
-            {% if product.status == 'published' %}
-            <span class="badge purple">В продаже</span>
-            {% endif %}
-            {% if not product.is_in_stock %}
-            <span class="badge orange">Нет в наличии</span>
-            {% endif %}
-        </div>
+        
 
         <div class="thumbnails">
             {% if product.image %}
@@ -41,6 +34,14 @@
     <div class="product-info">
         <div class="product-header">
             <h1>{{ product.name }}</h1>
+            <div class="badges">
+                {% if product.status == 'published' %}
+                <span class="badge purple">В продаже</span>
+                {% endif %}
+                {% if not product.is_in_stock %}
+                <span class="badge orange">Нет в наличии</span>
+                {% endif %}
+            </div>
             <div class="rating">
                 {% with product.reviews.all as reviews %}
                 <span class="stars">
@@ -58,6 +59,7 @@
                 <span class="char-name">Категория</span>
                 <span class="char-value">{{ product.category.name }}</span>
             </div>
+            
             <div class="char-item">
                 <span class="char-name">Наличие</span>
                 <span class="char-value">{% if product.is_in_stock %}В наличии ({{ product.stock }} шт.){% else %}Нет в

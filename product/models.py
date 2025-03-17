@@ -75,6 +75,7 @@ class Product(models.Model):
         ]
     
     def save(self, *args, **kwargs):
+
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
@@ -100,10 +101,16 @@ class Order(models.Model):
     
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     products = models.ManyToManyField(Product, through='OrderItem')
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.CharField(max_length=10, choices=ORDER_STATUS, default='pending')
     shipping_address = models.TextField()
     order_date = models.DateTimeField(default=timezone.now)
+    
+    def get_absolute_url(self) -> str:
+        return reverse('user:cart', args=[self.id])
+
+    def get_total(self) -> float:
+        return sum(item.get_total() for item in self.orderitem_set.all())
     
     class Meta:
         verbose_name = 'Заказ'
@@ -117,7 +124,8 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         verbose_name = 'Товар в заказе'
@@ -128,6 +136,17 @@ class OrderItem(models.Model):
     
     def get_total(self) -> float:
         return self.quantity * self.price
+    
+    def save(self, *args, **kwargs):
+        self.price = self.product.price
+        self.total = self.price * self.quantity
+        
+        super().save(*args, **kwargs)
+        
+        self.order.total_amount = self.order.get_total()
+        if self.order.status == 'pending':
+            self.order.status = 'processing'
+        self.order.save()
 
 
 class Review(models.Model):

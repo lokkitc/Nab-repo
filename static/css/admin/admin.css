@@ -1,2 +1,7 @@
+#header {
+    background-color: var(--primary-color);
+}
 
-
+#branding h1 {
+    color: white;
+}

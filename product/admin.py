@@ -62,7 +62,14 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'category', 'created_at')
+    list_display = ('image_tag', 'name', 'slug', 'category', 'created_at')
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
     list_per_page = 10
+
+
+    def image_tag(self, obj):
+        if obj.logo:
+            return mark_safe(f'<img src="{obj.logo.url}" width="100" height="100" />')
+        return "No image"
+    image_tag.short_description = 'Image'

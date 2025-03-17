@@ -1,0 +1,150 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'user/css/cart.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="cart-container">
+    <!-- Header -->
+    <header class="header">
+        <div class="header-main">
+            <h1>Корзина Technodom</h1>
+            <span class="items-count">{{ count }} товара</span>
+        </div>
+        <button class="btn-blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Коммерческое предложение
+        </button>
+    </header>
+
+    <!-- Actions -->
+    <div class="actions">
+        <label class="checkbox-label">
+            <input type="checkbox" class="custom-checkbox">
+            <span>Выбрать все</span>
+        </label>
+        <div class="action-buttons">
+            <button class="btn-blue btn-with-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16 6 12 2 8 6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+                <span>Поделиться</span>
+            </button>
+            <button class="btn-blue btn-with-icon btn-delete">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                </svg>
+                <span>Удалить ({{ count }})</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Product List -->
+    <div class="product-list">
+        {% for item in items %}
+        <div class="product-card">
+            <div class="product-main">
+                <input type="checkbox" class="product-checkbox custom-checkbox">
+                <div class="product-image">
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                    <div class="image-overlay">
+                        <span class="quick-view">Быстрый просмотр</span>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-header">
+                        <div>
+                            <h3>{{ item.product.name|truncatechars:20 }}</h3>
+                            <div class="product-meta">
+                                <span class="product-code">Код: {{ item.product.id }}</span>
+                                <span class="product-status available">В наличии</span>
+                            </div>
+                            <p class="price">{{ item.product.price }} ₸</p>
+                          
+                        </div>
+                        <button class="btn-heart" aria-label="В избранное">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" {% if item.quantity == 1 %}disabled{% endif %}>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                        </button>
+                        <span class="quantity">{{ item.quantity }}</span>
+                        <button class="quantity-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Services -->
+    <div class="services">
+        <h3 class="services-title">Дополнительные услуги</h3>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-info">
+                    <h4>Техносервис 2 года</h4>
+                    <p class="service-description">Расширенная гарантия на технику</p>
+                    <p class="price">20 000 ₸</p>
+                </div>
+                <button class="btn-plus" aria-label="Добавить услугу">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Card -->
+    <div class="summary-card">
+        <h2>Сумма к оплате</h2>
+        <div class="summary-items">
+            <div class="summary-row">
+                <span>{{ count }} товара на сумму</span>
+                <span class="bold">{{ total_amount }} ₸</span>
+            </div>
+            <div class="summary-row green">
+                <span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l2.2 6.6h7.1l-5.7 4.2 2.2 6.6-5.7-4.2-5.7 4.2 2.2-6.6-5.7-4.2h7.1z"/>
+                    </svg>
+                    Экономия
+                </span>
+                <span>20 000 ₸</span>
+            </div>
+            <div class="summary-row total">
+                <span>Итого</span>
+                <span>{{ order.total_amount }} ₸</span>
+            </div>
+        </div>
+        <button class="checkout-btn">
+            Оформить заказ
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+{% endblock %}

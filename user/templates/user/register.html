@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'user/css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+  <form method="post">
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% csrf_token %}
+    {% for f in form %}
+    <div class="form-group-lol">
+      <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+      {{ f }}
+      <div class="form-error">{{ f.errors }}</div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+  </form>
+
+</div>
+
+{% endblock %}
+

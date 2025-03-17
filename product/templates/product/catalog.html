@@ -1,8 +1,8 @@
-{% extends 'main/layout.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'product/catalog.css' %}">
+    <link rel="stylesheet" href="{% static 'product/css/catalog.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -13,26 +13,29 @@
             <select name="category">
                 <option value="">Все категории</option>
                 {% for category in categories %}
-                    <option value="{{ category.id }}" {% if selected_category == category.id %}selected{% endif %}>
+                    <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
                         {{ category.name }}
                     </option>
                 {% endfor %}
             </select>
-            <select name="brand">
-                <option value="">Все Бренды</option>
+            
+            <label>Бренды</label>
+            <div class="brands-filter">
                 {% for brand in brands %}
-                    <option value="{{ brand.id }}" {% if selected_brand == brand.id %}selected{% endif %}>
-                        {{ brand.name }}
-                    </option>
+                    <label class="brand-checkbox">
+                        <input type="checkbox" name="brand" value="{{ brand.id }}" 
+                            {% if brand.id|stringformat:"s" in selected_brands %}checked{% endif %}>
+                        <span class="brand-label">{{ brand.name }}</span>
+                    </label>
                 {% endfor %}
-            </select>
+            </div>
         </div>
-
+        <label for="priceMin">Цена</label>
         <div class="price-filter">
             <input type="number" name="priceMin" value="{{ price_min }}" placeholder="Мин. цена">
             <input type="number" name="priceMax" value="{{ price_max }}" placeholder="Макс. цена">
         </div>
-        
+        <label for="sorting">Сортировка</label>
         <div class="sorting">
             <select name="sorting">
                 <option value="">Сортировка</option>
@@ -48,9 +51,8 @@
     </form>
 
     <div class="product-grid">
-        <div class="product-grid">
-            {% if products %}
-            {% for product in products %}
+        {% if products %}
+        {% for product in products %}
                 {% if product.status == 'published' %}
                 {% if product.get_absolute_url %}
                 <div class="product-item">

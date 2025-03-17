@@ -1,8 +1,8 @@
-{% extends 'main/layout.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 
 {% block css_files %}
-<link rel="stylesheet" href="{% static 'user/login.css' %}">
+<link rel="stylesheet" href="{% static 'user/css/register.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -11,16 +11,13 @@
   <form method="post">
     <div class="form-error">{{ form.non_field_errors }}</div>
     {% csrf_token %}
-    <div class="form-group">
-      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-      {{ form.username }}
-      <div class="form-error">{{ form.username.errors }}</div>
+    {% for f in form %}
+    <div class="form-group-lol">
+      <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+      {{ f }}
+      <div class="form-error">{{ f.errors }}</div>
     </div>
-    <div class="form-group">
-      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-      {{ form.password }}
-      <div class="form-error">{{ form.password.errors }}</div>
-    </div>
+    {% endfor %}
     <button type="submit" class="btn btn-primary">Войти</button>
   </form>
 

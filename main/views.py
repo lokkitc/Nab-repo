@@ -1,9 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from product.models import Product, Category, Review, Order, OrderItem
-from django.db.models import Q, Avg
-from django.shortcuts import redirect
-from django.conf import settings
+from product.models import Product, Brand
+from django.db.models import Avg
+from django.contrib.auth.decorators import login_required
 
 menu = [
     {'title': 'Главная', 'url_name': 'home'},
@@ -11,11 +9,21 @@ menu = [
     {'title': 'Регистрация', 'url_name': 'register'},
 ]
 
-
+@login_required(login_url='user:login')
+def about(request):
+    return render(request, 'main/about.html')
 
 def home(request):
+
     data = {    
+
         'title': 'Главная страница',
+        'brands': Brand.objects.all(),
+        'products': Product.objects.all().annotate(avg_rating=Avg('reviews__rating')),
+        'most_popular_product': Product.objects.annotate(avg_rating=Avg('reviews__rating')).order_by('-avg_rating').first(),
+        'most_expensive_product': Product.objects.order_by('-price').first(),
+        'user': request.user,
+
     }
     return render(request, 'main/home.html', data)
 

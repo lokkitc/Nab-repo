@@ -1,43 +1,201 @@
-{% extends 'main/layout.html' %}
+{% extends 'main/base.html' %}
 {% load static %}
 
 {% block css_files %}
-    <link rel="stylesheet" href="{% static 'main/home.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
 {% endblock %}
 
 {% block content %}
-        <div class="content">
-            <div class="offer">
-                <span class="tag">Специальное Предложение</span>
-                <h1>На Мобильные Телефоны <br> Распродажа До 30% Скидки</h1>
-                <p>Start From 59 999.00 ₸</p>
-                <a href="#" class="buy-btn">Делать Покупки Сейчас</a>
-            </div>
-            <div class="image">
-                <img src="{% static 'main/assets/img/laptop.png' %}" alt="Ноутбук">
+    <section class="brand-bar">
+        <div class="container">
+            <div class="brand-logos">
+                {% for brand in brands|slice:":6" %}
+                {% if brand.logo %}
+                <div class="brand-logo">
+                    <a href="{% url 'product:catalog' %}?category=&brand={{ brand.id }}&priceMin=&priceMax=&sorting=">
+                        <img src="{{ brand.logo.url }}" alt="{{ brand.name }}">
+                    </a>
+                </div>
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
-        <div class="sidebar">
-            <button class="menu-btn">☰ Наши Категории</button>
-            <ul class="dropdown">
-                <li><img src="{% static 'main/assets/svg/home/smartphone.svg' %}" alt="Smartphone" /> Сотовый Телефон</li>
-                <li><img src="{% static 'main/assets/svg/home/washing-machine.svg' %}" alt="Washing Machine" /> Техника для дома</li>
-                <li><img src="{% static 'main/assets/svg/home/pc.svg' %}" alt="PC" /> Компьютер и Ноутбук</li>
-                <li><img src="{% static 'main/assets/svg/home/desktop.svg' %}" alt="Desktop" /> Телевизоры и аксессуары к ТВ</li>
-                <li><img src="{% static 'main/assets/svg/home/gamepad.svg' %}" alt="Gamepad" /> Игры и Консоли</li>
-                <li><img src="{% static 'main/assets/svg/home/printer.svg' %}" alt="Printer" /> Офисная техника</li>
-                <li><img src="{% static 'main/assets/svg/home/discount.svg' %}" alt="Discount" /> Продукт со Скидкой</li>
-            </ul>
-        </div>
-    </div>
+    </section>
 
-    
-    
-    <script>
-        document.querySelector('.menu-btn').addEventListener('click', function() {
-            let dropdown = document.querySelector('.dropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        });
-    </script>
+    <main class="container">
+        <section class="categories">
+            <h2>Трендовые Продукты</h2>
+            <div class="category-filters">
+                <button class="filter-btn active">Бестселлер</button>
+                <button class="filter-btn">Рекомендуемые Товары</button>
+                <button class="filter-btn">Новый Продукт</button>
+                <button class="filter-btn">Специальные Товары</button>
+            </div>
+
+            <div class="product-grid">
+                {% if products %}
+                {% for product in products %}
+                        {% if product.status == 'published' %}
+                        {% if product.get_absolute_url %}
+                        <div class="product-item">
+                            <div class="product-card">
+                                {% if product.image %}
+                                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                {% else %}
+                                <img src="{% static 'product/images/placeholder.jpg' %}" alt="{{ product.name }}">
+                                {% endif %}
+                                <div class="product-name">{{product.name|truncatechars:20}}</div>
+                                <div class="product-description">{{product.description|truncatechars:40}}</div>
+                                <div class="product-price">{{product.price}} ₸</div>
+                                <p class="rating">
+                                    Рейтинг: {{ product.avg_rating|default:"Нет оценок"|floatformat:1 }}
+                                </p>
+                                <a href="{{ product.get_absolute_url }}" class="buy-button">Купить</a>
+                                <a class="add-to-cart-button">Добавить в корзину</a>
+                            </div>
+                        </div>
+                        {% else %}
+                        <p>Товара нет</p>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <p>Товаров нет</p>
+                    {% endif %}
+                </div>
+            </div>
+            </section>
+        
+        </section>
+
+        <!-- Features -->
+        <section class="features">
+            <div class="feature">
+                <div class="feature-icon">🚚</div>
+                <h3>Бесплатная доставка</h3>
+                <p>При заказе от 10 000₸</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🕒</div>
+                <h3>24/7 Поддержка</h3>
+                <p>Круглосуточная поддержка</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎁</div>
+                <h3>Бонусная Программа</h3>
+                <p>Скидки постоянным клиентам</p>
+            </div>
+        </section>
+
+        <!-- Promotional Banners -->
+        <section class="promo-section">
+            <div class="promo-banner">
+                <div class="promo-content">
+                    <h3>{{ most_popular_product.name }}</h3>
+                    <p>{{ most_popular_product.description }}</p>
+                    <div class="price">{{ most_popular_product.price }}₸</div>
+                </div>
+                <img src="{{ most_popular_product.image.url }}" alt="{{ most_popular_product.name }}">
+            </div>
+            <div class="promo-banner">
+                <div class="promo-content">
+                    <h3>{{ most_expensive_product.name }}</h3>
+                    <p>{{ most_expensive_product.description }}</p>
+                    <div class="price">{{ most_expensive_product.price }}₸</div>
+                </div>
+                <img src="{{ most_expensive_product.image.url }}" alt="{{ most_expensive_product.name }}">
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+
+<main class="container">
+    <!-- Promo Banner -->
+    <section class="main-promo">
+        <img src="https://images.unsplash.com/photo-1585155770447-2f66e2a397b5?auto=format&fit=crop&w=1200&h=400" alt="Promo Banner">
+        <div class="promo-overlay">
+            <h2>Скидка До 25%</h2>
+            <p>Проверь Это</p>
+            <button class="promo-btn">Узнать Больше</button>
+        </div>
+    </section>
+
+    <!-- Shop By Category -->
+    <section class="shop-categories">
+        <div class="section-header">
+            <h2>Купить По Категориям</h2>
+            <a href="#" class="view-all">Показать все →</a>
+        </div>
+        <div class="category-grid">
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1616763355603-9755a640a287?auto=format&fit=crop&w=400&h=300" alt="Audio Systems">
+                <div class="category-info">
+                    <h3>Аудио Системы</h3>
+                    <p>От 50 000₸</p>
+                    <button class="category-btn">Смотреть Все</button>
+                </div>
+            </div>
+            <div class="category-card">
+                <img src="https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=400&h=300" alt="Laptops">
+                <div class="category-info">
+                    <h3>Ноутбуки</h3>
+                    <p>От 250 000₸</p>
+                    <button class="category-btn">Смотреть Все</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Signup -->
+    <section class="newsletter">
+        <h2>Подпишитесь На Нашу Рассылку</h2>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Введите ваш email адрес">
+            <button type="submit">Подписаться</button>
+        </form>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog">
+        <div class="section-header">
+            <h2>Наш Блог</h2>
+            <a href="#" class="view-all">Показать все →</a>
+        </div>
+        <div class="blog-grid">
+            <article class="blog-card">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&h=250" alt="Blog Post 1">
+                <div class="blog-content">
+                    <span class="date">15 Февраля 2024</span>
+                    <h3>Лучшие гаджеты 2024 года</h3>
+                    <p>2 комментария</p>
+                    <a href="#" class="read-more">Читать далее</a>
+                </div>
+            </article>
+            <article class="blog-card">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&h=250" alt="Blog Post 2">
+                <div class="blog-content">
+                    <span class="date">12 Февраля 2024</span>
+                    <h3>Как выбрать ноутбук</h3>
+                    <p>5 комментариев</p>
+                    <a href="#" class="read-more">Читать далее</a>
+                </div>
+            </article>
+            <article class="blog-card">
+                <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&h=250" alt="Blog Post 3">
+                <div class="blog-content">
+                    <span class="date">10 Февраля 2024</span>
+                    <h3>Технологии будущего</h3>
+                    <p>3 комментария</p>
+                    <a href="#" class="read-more">Читать далее</a>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+
+</body>
+</html>
 
 {% endblock %}

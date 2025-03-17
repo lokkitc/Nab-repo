@@ -1,0 +1,476 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{title|default:"NAB TECH"}} </title>
+
+  <!-- 
+    - favicon
+  -->
+  <link rel="shortcut icon" href="{% static 'main/assets/img/favicon-32x32.png' %}" type="image/png">
+
+  <!-- 
+    - custom css link
+  --> 
+    <link rel="stylesheet" href="{% static 'main/css/base.css' %}">
+  {% block css_files %}{% endblock %}
+
+  <!-- 
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- 
+    - preload images
+  -->
+  <!-- <link rel="preload" as="image" href="{% static 'main/assets/img//header-logo.png' %}">
+  <link rel="preload" as="image" href="{% static 'main/assets/img/hero-banner-1.jpg' %}">
+  <link rel="preload" as="image" href="{% static 'main/assets/img/hero-banner-2.jpg' %}">
+  <link rel="preload" as="image" href="{% static 'main/assets/img/hero-banner-3.jpg' %}"> -->
+
+</head>
+
+<body id="top">
+
+  <!-- 
+    - #HEADER
+  -->
+  <div class="main-container">
+  <header class="header">
+
+    <div class="alert">
+      <div class="container">
+        <div style="display: flex; align-items: center;">
+          <img src="{% static 'main/assets/svg/layout/delivery.svg' %}" width="25" height="25" alt="Glowing">
+          <p class="alert-text" style="margin-left: 8px;">Самый быстрый в мире пункт назначения для онлайн-покупок</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-top" data-header>
+      <div class="container">
+        
+         <button class="nav-open-btn" aria-label="open menu" data-nav-toggler>
+          <span class="line line-1"></span>
+          <span class="line line-2"></span>
+          <span class="line line-3"></span>
+        </button>
+
+
+        <a href="#" class="logo">
+          <img src="{% static 'main/assets/img/header-logo.png' %}" width="179" height="26" alt="Glowing">
+        </a>
+       
+
+        <div class="input-wrapper">
+          <div class="search-container">
+            <div class="select-wrapper">
+              <select name="category" class="select-field">
+                <option>Все Категории</option>
+                <option value="1">Категория 1</option>
+                <option value="2">Категория 2</option>
+                <option value="3">Категория 3</option>
+              </select>
+            </div>
+            <input type="search" name="search" placeholder="Ищите здесь..." class="search-field">
+            <button class="search-submit" aria-label="search">
+              <ion-icon name="search-outline" aria-hidden="true"></ion-icon><a>Поиск</a>
+            </button>
+          </div>
+        </div>
+        
+
+        
+
+        <div class="header-actions">
+            {% if user.is_authenticated %}
+            {% if user.is_superuser %}
+            <a href="{% url 'admin:index' %}"> Админ панель</a>
+            {% else %}
+            <a href="{% url 'user:profile' pk=user.id %}">{{ user.username }}</a>
+            {% endif %}
+            <a href="{% url 'user:logout' %}">Выйти</a>
+            {% else %}
+            <a href="{% url 'user:login' %}"> Войти</a>
+            <a href="{% url 'user:register' %}"> Регистрация</a>
+            {% endif %}
+          <button class="header-action-btn" aria-label="user">
+            {% if user.is_authenticated %}
+            <a href="{% url 'user:profile' pk=user.id %}">
+            <ion-icon name="person-outline" aria-hidden="true" aria-hidden="true"></ion-icon>
+            </a>
+            {% endif %}
+          </button>
+
+          <button class="header-action-btn" aria-label="cart item">
+            <data class="btn-text" value="0">567 ₸</data>
+
+            <ion-icon name="bag-handle-outline" aria-hidden="true" aria-hidden="true"></ion-icon>
+
+            <span class="btn-badge">{{ count }}</span>
+          </button>
+
+        </div>
+
+        <nav class="navbar">
+            <div class="phone-number">
+                <img src="{% static 'main/assets/svg/layout/phone-calling.svg' %}" alt="phone">
+                <a href="tel:+77771111111" class="number-link">+7 (777)-111-11-11</a>
+            </div>
+          <ul class="navbar-list">
+            
+            
+            <li>
+              <a href="{% url 'home' %}" class="navbar-link has-after">Главная</a>
+            </li>
+
+            <li>
+              <a href="{% url 'product:catalog' %}" class="navbar-link has-after">Магазин</a>
+            </li>
+
+            <li>
+              <a href="#shop" class="navbar-link has-after">Блог</a>
+            </li>
+
+            <li>
+              <a href="{% url 'about' %}" class="navbar-link has-after">О нас</a>
+            </li>
+
+            <li>
+              <a href="#blog" class="navbar-link has-after">Страницы</a>
+            </li>
+
+            <li>
+              <a href="#blog" class="navbar-link has-after">Бренды</a>
+            </li>
+
+          </ul>
+          <ul class="nav-icons">
+              <li>
+              <a href="#" class="nav-icon">
+                <img src="{% static 'main/assets/svg/layout/facebook.svg' %}" alt="facebook">
+              </a>
+              </li>
+              <li>
+              <a href="#" class="nav-icon">
+                <img src="{% static 'main/assets/svg/layout/twitter.svg' %}" alt="twitter">
+              </a>
+              </li>
+              <li>
+              <a href="#" class="nav-icon">
+                <img src="{% static 'main/assets/svg/layout/instagram.svg' %}" alt="instagram">
+              </a>
+              </li>
+              <li>
+              <a href="#" class="nav-icon">
+                <img src="{% static 'main/assets/svg/layout/youtube.svg' %}" alt="youtube">
+                
+              </a>
+              </li>
+              <li>
+              <a href="#" class="nav-icon">
+                <img src="{% static 'main/assets/svg/layout/pinterest.svg' %}" alt="pinterest">
+              </a>
+              </li>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+    </div>
+
+  </header>
+
+
+
+
+
+  <!-- 
+    - #MOBILE NAVBAR
+  -->
+
+  <div class="sidebar">
+    <div class="mobile-navbar" data-navbar>
+
+      <div class="wrapper">
+        <a href="#" class="logo">
+          <img src="{% static 'main/assets/img/header-logo.png' %}" width="179" height="26" alt="Glowing">
+        </a>
+
+        <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+          <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+        </button>
+      </div>
+
+      <ul class="navbar-list">
+
+        <li>
+          <a href="{% url 'home' %}" class="navbar-link has-after">Главная</a>
+        </li>
+
+        <li>
+          <a href="{% url 'product:catalog' %}" class="navbar-link has-after">Магазин</a>
+        </li>
+
+        <li>
+          <a href="#shop" class="navbar-link has-after">Блог</a>
+        </li>
+
+        <li>
+          <a href="{% url 'about' %}" class="navbar-link has-after">О нас</a>
+        </li>
+
+        <li>
+          <a href="#blog" class="navbar-link has-after">Страницы</a>
+        </li>
+
+        <li>
+          <a href="#blog" class="navbar-link has-after">Бренды</a>
+        </li>
+
+      </ul>
+
+    </div>
+
+    <div class="overlay" data-nav-toggler data-overlay></div>
+  </div>
+
+
+
+
+  <main>
+    <article>
+        {% block content %}
+
+        {% endblock %}
+    </article>
+  </main>
+
+
+
+  <!-- 
+    - #FOOTER
+  -->
+
+  <footer class="footer" data-section>
+    <div class="container">
+
+      <div class="footer-top">
+
+        <ul class="footer-list">
+
+          <li>
+            <p class="footer-list-title">Информация о магазине</p>
+          </li>
+
+          <li>
+            <p class="footer-list-text">
+              Абая 52г, Алматы, Казахстан
+            </p>
+          </li>
+
+          <li>
+            <p class="footer-list-text bold">+7 (777)-111-11-11</p>
+          </li>
+
+          <li>
+            <p class="footer-list-text">nabtechshop@gmail.com</p>
+          </li>
+
+        </ul>
+
+        <ul class="footer-list">
+
+          <li>
+            <p class="footer-list-title">Наша компания</p>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">О нас</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Страницы</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Блог</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Бренды</a>
+          </li>
+
+        </ul>
+
+        <ul class="footer-list">
+
+          <li>
+            <p class="footer-list-title">Наш аккаунт</p>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Персональные данные</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Адреса доставки</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Способы оплаты</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Персоналы</a>
+          </li>
+
+          <li>
+            <a href="#" class="footer-link">Политика конфиденциальности</a>
+          </li>
+
+        </ul>
+
+        <ul class="footer-list">
+            <li>
+                <p class="footer-list-title">Продукты</p>
+            </li>
+              <li>
+                <a href="#" class="footer-link">Новые продукты</a>
+              </li>
+    
+              <li>
+                <a href="#" class="footer-link">Бестселлеры</a>
+              </li>
+    
+              <li>
+                <a href="#" class="footer-link">Скидки</a>
+              </li>
+    
+              <li>
+                <a href="#" class="footer-link">Последние продукты</a>
+              </li>
+    
+              <li>
+                <a href="#" class="footer-link">Уникальные продукты</a>
+              </li>
+    
+        </ul>
+
+
+        <ul class="footer-list">
+            <li>
+                <p class="footer-list-title">Часы работы</p>
+            </li>
+              <li>
+                <a href="#" class="footer-link">Пн-Ср: 9:00-18:00</a>
+              </li>
+    
+              <li>
+                <a href="#" class="footer-link">Чт-Сб: 9:00-18:00</a>
+              </li>
+    
+              <li>
+                <a href="#" class="footer-link">Вс: Выходной</a>
+              </li>
+    
+        </ul>
+
+        <!-- <div class="footer-list">
+
+          <p class="newsletter-title">Хорошие письма.</p>
+
+          <p class="newsletter-text">
+            Введите свой email ниже, чтобы первыми узнавать о новых коллекциях и запусках продуктов.
+          </p>
+
+          <form action="" class="newsletter-form">
+            <input type="email" name="email_address" placeholder="Введите ваш email адрес" required
+              class="email-field">
+
+            <button type="submit" class="btn btn-primary">Подписаться</button>
+          </form>
+
+        </div> -->
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <div class="wrapper">
+          <p class="copyright">
+            &copy; 2025 Nabtechshop
+          </p>
+
+          <ul class="social-list">
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-twitter"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-instagram"></ion-icon>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="social-link">
+                <ion-icon name="logo-youtube"></ion-icon>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+
+        <a href="#" class="logo">
+          <img src="{% static 'main/assets/img/header-logo.png' %}" width="179" height="26" loading="lazy" alt="Glowing">
+        </a>
+
+        <img src="{% static 'main/assets/img/pay.png' %}" width="313" height="28" alt="available all payment method" class="w-100">
+
+      </div>
+
+    </div>
+  </footer>
+</div>
+  <!-- 
+    - #BACK TO TOP
+  -->
+
+  <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+    <ion-icon name="arrow-up" aria-hidden="true"></ion-icon>
+  </a>
+
+
+
+
+
+  <!-- 
+    - custom js link
+  -->
+  <script src="{% static 'main/js/base.js' %}" defer></script>
+
+  <!-- 
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>
