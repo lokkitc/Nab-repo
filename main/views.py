@@ -9,7 +9,6 @@ menu = [
     {'title': 'Регистрация', 'url_name': 'register'},
 ]
 
-@login_required(login_url='user:login')
 def about(request):
     return render(request, 'main/about.html')
 

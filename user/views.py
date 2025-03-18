@@ -25,14 +25,23 @@ def profile_user(request, pk):
     else:
         return redirect('user:login')
 
+def payment(request):
+    return render(request, 'main/payment.html')
 
 def cart(request, pk):
     order = Order.objects.get(id=pk, user=request.user)
     items = order.orderitem_set.all()
+    
+    total_amount = order.total_amount
+    user_balance = request.user.money 
+    can_checkout = user_balance >= total_amount
+    
     context = {
             'order': order,
             'items': items,
             'count': items.count(),
+            'can_checkout': can_checkout,
+            'user_balance': user_balance,
             # 'bonus': bonus,
         }
     return render(request, 'user/cart.html', context)

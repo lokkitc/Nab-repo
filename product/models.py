@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse
 from django.conf import settings
+from decimal import Decimal
 
 
 class BaseModel(models.Model):
@@ -109,9 +110,9 @@ class Order(models.Model):
     
     def get_absolute_url(self) -> str:
         return reverse('user:cart', args=[self.id])
-
-    def get_total(self) -> float:
-        return sum(item.get_total() for item in self.orderitem_set.all())
+    
+    def get_total(self) -> Decimal:
+        return sum((item.get_total() for item in self.orderitem_set.all()), Decimal('0'))
     
     class Meta:
         verbose_name = 'Заказ'
@@ -161,11 +162,9 @@ class OrderItem(models.Model):
         self.price = self.product.price
         self.total = self.price * self.quantity
         
-        # Проверяем наличие товара на складе
         if self.product.stock < self.quantity:
             raise ValueError(f"Недостаточно товара на складе. Доступно: {self.product.stock}")
         
-        # Уменьшаем количество товара на складе
         self.product.stock -= self.quantity
         self.product.save()
         
@@ -190,7 +189,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
-        unique_together = ['product', 'user']  # One review per user per product
+        unique_together = ['product', 'user'] 
         ordering = ['-created_at']
     
     def __str__(self) -> str:

@@ -151,6 +151,11 @@ h1 {
     font-weight: 500;
 }
 
+.checkout-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 /* Services */
 .services {
     margin-top: 1.5rem;

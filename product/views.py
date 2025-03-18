@@ -46,7 +46,7 @@ def catalog(request):
         brands = Brand.objects.all()
         
     selected_name = request.GET.get('name')
-    print(f"Selected name: {selected_name}")  # Отладочный вывод
+    print(f"Selected name: {selected_name}") 
     selected_brands = request.GET.getlist('brand')
     price_min = request.GET.get('priceMin')
     price_max = request.GET.get('priceMax')
@@ -98,7 +98,6 @@ def catalog(request):
     except:
         page_obj = paginator.page(1)
 
-    # Добавляем проверку на наличие продуктов
     if not page_obj.object_list:
         no_products_message = "Нет доступных продуктов по вашему запросу."
     else:
@@ -117,7 +116,7 @@ def catalog(request):
         'MEDIA_URL': settings.MEDIA_URL,
         'page_obj': page_obj,
         'is_paginated': page_obj.has_other_pages(),
-        'no_products_message': no_products_message,  # Добавляем сообщение в контекст
+        'no_products_message': no_products_message, 
     }
     
     return render(request, 'product/catalog.html', context)
@@ -135,11 +134,9 @@ def add_to_cart(request):
         except Product.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Product not found'})
         
-        # Проверяем наличие товара
         if not product.is_in_stock():
             return JsonResponse({'success': False, 'error': 'Product out of stock'})
         
-        # Проверяем достаточное ли количество
         if product.stock < quantity:
             return JsonResponse({
                 'success': False, 
@@ -158,9 +155,7 @@ def add_to_cart(request):
             )
         
         try:
-            # Проверяем, есть ли уже такой товар в корзине
             order_item = OrderItem.objects.get(order=order, product=product)
-            # Проверяем возможность добавления количества
             if product.stock < (order_item.quantity + quantity):
                 return JsonResponse({
                     'success': False,
@@ -200,18 +195,15 @@ def update_cart_item(request):
         order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user)
         product = order_item.product
         
-        # Check if we have enough stock
         if product.stock + order_item.quantity < quantity:
             return JsonResponse({
                 'success': False,
                 'error': f'Недостаточно товара. Доступно: {product.stock + order_item.quantity}'
             })
         
-        # Return stock from old quantity
         product.stock += order_item.quantity
         product.save()
         
-        # Update quantity
         order_item.quantity = quantity
         order_item.save()
         
@@ -234,18 +226,14 @@ def delete_cart_item(request):
         
         order_item = get_object_or_404(OrderItem, id=item_id, order__user=request.user)
         
-        # Return stock
         product = order_item.product
         product.stock += order_item.quantity
         product.save()
         
-        # Get order before deleting item
         order = order_item.order
         
-        # Delete item
         order_item.delete()
         
-        # Update order total
         order.total_amount = order.get_total()
         order.save()
         

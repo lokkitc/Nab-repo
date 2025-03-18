@@ -3,7 +3,6 @@
 }
 
 
-/* Brand Bar */
 .brand-bar {
     background: var(--white);
     padding: 1.5rem 0;
@@ -42,7 +41,6 @@
     opacity: 1;
 }
 
-/* Categories Section */
 .categories {
     margin-bottom: 3rem;
 }
@@ -81,7 +79,6 @@
     background: var(--light-gray);
 }
 
-/* Products Grid */
 
 .badge {
     position: absolute;
@@ -122,7 +119,6 @@
     background: var(--secondary);
 }
 
-/* Features Section */
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -347,7 +343,6 @@
     background-color: var(--primary-color);
 }
 
-/* Promo Section */
 .promo-section {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -388,7 +383,6 @@
     border-radius: 0.5rem;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .brand-logos {
         justify-content: center;
@@ -430,7 +424,6 @@
     }
 }
 
-/* Main Promo Banner */
 .main-promo {
     position: relative;
     margin-bottom: 3rem;
@@ -473,7 +466,6 @@
     background: var(--secondary);
 }
 
-/* Shop Categories */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -541,7 +533,6 @@
     background: var(--secondary);
 }
 
-/* Newsletter */
 .newsletter {
     background:var(--primary-color);
     color: var(--white);
@@ -584,7 +575,7 @@
     background: var(--gray);
 }
 
-/* Blog Section */
+
 .blog-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -631,7 +622,7 @@
 }
 
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .brand-logos {
         justify-content: center;

@@ -1,4 +1,5 @@
 from product.models import Product, Category, Review, Order, OrderItem, Brand
+from decimal import InvalidOperation, Decimal
 
 def global_context(request):
     count = 0
@@ -10,7 +11,7 @@ def global_context(request):
             if order:
                 count = order.orderitem_set.count()
                 
-        except Order.DoesNotExist:
+        except (Order.DoesNotExist, InvalidOperation):
             pass
 
     context = {
