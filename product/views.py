@@ -245,3 +245,43 @@ def delete_cart_item(request):
         
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
+
+@login_required
+def add_review(request, product_id):
+    if request.method == 'POST':
+        try:
+            product = Product.objects.get(id=product_id)
+            rating = request.POST.get('rating')
+            comment = request.POST.get('comment')
+            
+            # Проверяем, не оставлял ли пользователь уже отзыв
+            if Review.objects.filter(product=product, user=request.user).exists():
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Вы уже оставляли отзыв к этому товару'
+                })
+            
+            Review.objects.create(
+                product=product,
+                user=request.user,
+                rating=rating,
+                comment=comment
+            )
+            
+            return JsonResponse({'success': True})
+            
+        except Product.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': 'Товар не найден'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            })
+    
+    return JsonResponse({
+        'success': False,
+        'error': 'Неверный метод запроса'
+    })

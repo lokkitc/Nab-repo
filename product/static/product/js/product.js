@@ -50,6 +50,7 @@
         const minusBtn = document.querySelector('.quantity-btn.minus');
         const plusBtn = document.querySelector('.quantity-btn.plus');
         const addToCartBtn = document.querySelector('.btn-add-cart');
+        const reviewForm = document.querySelector('.review-form');
 
         // Обработчики кнопок +/-
         minusBtn.addEventListener('click', () => {
@@ -88,6 +89,36 @@
                 const productId = this.getAttribute('data-product-id');
                 const quantity = parseInt(quantityInput.value);
                 handleAddToCart(productId, quantity);
+            });
+        }
+
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Перезагрузить страницу для отображения нового отзыва
+                        window.location.reload();
+                    } else {
+                        alert(data.error || 'Произошла ошибка при отправке отзыва');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Произошла ошибка при отправке отзыва');
+                });
             });
         }
     });

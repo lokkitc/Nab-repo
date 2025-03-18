@@ -178,8 +178,74 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </main>
 
+<section class="product-reviews">
+    <h2>Отзывы о товаре</h2>
+    
+    {% if user.is_authenticated %}
+    <div class="review-form-container">
+        <h3>Оставить отзыв</h3>
+        <form method="POST" action="{% url 'product:add_review' product.id %}" class="review-form">
+            {% csrf_token %}
+            <div class="rating-input">
+                <label>Ваша оценка:</label>
+                <div class="star-rating">
+                    {% for i in "12345"|make_list %}
+                    <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}" required>
+                    <label for="star{{ i }}">☆</label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="comment-input">
+                <label for="comment">Ваш комментарий:</label>
+                <textarea id="comment" name="comment" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="submit-review">Отправить отзыв</button>
+        </form>
+    </div>
+    {% else %}
+    <div class="review-login-prompt">
+        <p>Чтобы оставить отзыв, пожалуйста, <a href="{% url 'login' %}">войдите</a> в свой аккаунт</p>
+    </div>
+    {% endif %}
+
+    {% if product.reviews.all %}
+        {% for review in product.reviews.all %}
+        <div class="review-card">
+            <div class="review-header">
+                <div class="user-info">
+                    {% if review.user.photo %}
+                        <img src="{{ review.user.photo.url }}" alt="{{ review.user.username }}" class="user-avatar">
+                    {% else %}
+                        <img src="{% static 'main/images/default-avatar.png' %}" alt="{{ review.user.username }}" class="user-avatar">
+                    {% endif %}
+                    <div class="user-details">
+                        <strong>{{ review.user.username }}</strong>
+                        <div class="review-time">
+                            <span class="review-date">{{ review.created_at|date:"d.m.Y" }}</span>
+                            <span class="review-time">{{ review.created_at|time:"H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="rating">
+                    {% for i in "12345"|make_list %}
+                        {% if forloop.counter <= review.rating %}
+                            <span class="star filled">★</span>
+                        {% else %}
+                            <span class="star">☆</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="review-content">
+                <p>{{ review.comment|linebreaks }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-reviews">У этого товара пока нет отзывов. Будьте первым!</p>
+    {% endif %}
+</section>
+
 <script src="{% static 'product/js/product.js' %}"></script>
-
-
 
 {% endblock %}
