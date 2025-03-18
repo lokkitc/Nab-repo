@@ -51,7 +51,6 @@
                                     Рейтинг: {{ product.avg_rating|default:"Нет оценок"|floatformat:1 }}
                                 </p>
                                 <a href="{{ product.get_absolute_url }}" class="buy-button">Купить</a>
-                                <a class="add-to-cart-button">Добавить в корзину</a>
                             </div>
                         </div>
                         {% else %}
@@ -94,6 +93,7 @@
                     <h3>{{ most_popular_product.name }}</h3>
                     <p>{{ most_popular_product.description }}</p>
                     <div class="price">{{ most_popular_product.price }}₸</div>
+                    <a href="{{ most_popular_product.get_absolute_url }}" class="buy-button">Купить</a>
                 </div>
                 <img src="{{ most_popular_product.image.url }}" alt="{{ most_popular_product.name }}">
             </div>
@@ -102,6 +102,7 @@
                     <h3>{{ most_expensive_product.name }}</h3>
                     <p>{{ most_expensive_product.description }}</p>
                     <div class="price">{{ most_expensive_product.price }}₸</div>
+                    <a href="{{ most_expensive_product.get_absolute_url }}" class="buy-button">Купить</a>
                 </div>
                 <img src="{{ most_expensive_product.image.url }}" alt="{{ most_expensive_product.name }}">
             </div>
@@ -131,9 +132,9 @@
             <div class="category-card">
                 <img src="https://images.unsplash.com/photo-1616763355603-9755a640a287?auto=format&fit=crop&w=400&h=300" alt="Audio Systems">
                 <div class="category-info">
-                    <h3>Аудио Системы</h3>
+                    <h3>Гаджеты</h3>
                     <p>От 50 000₸</p>
-                    <button class="category-btn">Смотреть Все</button>
+                    <a href="{% url 'product:catalog' %}?name=&category=3&priceMin=&priceMax=&sorting=" class="category-btn">Смотреть Все</a>
                 </div>
             </div>
             <div class="category-card">
@@ -141,57 +142,13 @@
                 <div class="category-info">
                     <h3>Ноутбуки</h3>
                     <p>От 250 000₸</p>
-                    <button class="category-btn">Смотреть Все</button>
+                    <a href="{% url 'product:catalog' %}?name=&category=2&priceMin=&priceMax=&sorting=" class="category-btn">Смотреть Все</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Newsletter Signup -->
-    <section class="newsletter">
-        <h2>Подпишитесь На Нашу Рассылку</h2>
-        <form class="newsletter-form">
-            <input type="email" placeholder="Введите ваш email адрес">
-            <button type="submit">Подписаться</button>
-        </form>
-    </section>
-
-    <!-- Blog Section -->
-    <section class="blog">
-        <div class="section-header">
-            <h2>Наш Блог</h2>
-            <a href="#" class="view-all">Показать все →</a>
-        </div>
-        <div class="blog-grid">
-            <article class="blog-card">
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&h=250" alt="Blog Post 1">
-                <div class="blog-content">
-                    <span class="date">15 Февраля 2024</span>
-                    <h3>Лучшие гаджеты 2024 года</h3>
-                    <p>2 комментария</p>
-                    <a href="#" class="read-more">Читать далее</a>
-                </div>
-            </article>
-            <article class="blog-card">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&h=250" alt="Blog Post 2">
-                <div class="blog-content">
-                    <span class="date">12 Февраля 2024</span>
-                    <h3>Как выбрать ноутбук</h3>
-                    <p>5 комментариев</p>
-                    <a href="#" class="read-more">Читать далее</a>
-                </div>
-            </article>
-            <article class="blog-card">
-                <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=400&h=250" alt="Blog Post 3">
-                <div class="blog-content">
-                    <span class="date">10 Февраля 2024</span>
-                    <h3>Технологии будущего</h3>
-                    <p>3 комментария</p>
-                    <a href="#" class="read-more">Читать далее</a>
-                </div>
-            </article>
-        </div>
-    </section>
+    
 </main>
 
 

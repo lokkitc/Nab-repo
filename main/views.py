@@ -34,3 +34,11 @@ def register(request):
     }
     return render(request, 'main/register.html', data)
 
+
+def brands(request):
+    data = {
+        'title': 'Бренды',
+        'brands': Brand.objects.all(),
+    }
+    return render(request, 'main/brands.html', data)
+

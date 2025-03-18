@@ -78,7 +78,11 @@ const headerSticky = function () {
 
 addEventOnElem(window, "scroll", headerSticky);
 
-
+function submitSearch() {
+  const searchValue = document.querySelector('input[name="name"]').value;
+  const categoryValue = document.querySelector('select[name="category"]').value;
+  window.location.href = `{% url 'product:catalog' %}?name=${searchValue}&category=${categoryValue}`;
+}
 
 /**
  * scroll reveal effect

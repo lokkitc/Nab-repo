@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Бренды{% endblock %}
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'main/css/brands.css' %}">
+{% endblock %}
+{% block content %}
+<div class="brands-container">
+    <h1 class="brands-title">Наши бренды</h1>
+    
+    <div class="brands-grid">
+        {% for brand in brands %}
+        <div class="brand-card">
+            <img src="{{ brand.logo.url }}" alt="{{ brand.name }}" class="brand-logo">
+            <h3 class="brand-name">{{ brand.name }}</h3>
+            <p class="brand-description">{{ brand.description|truncatechars:100 }}</p>
+        </div>
+        {% endfor %}
+        </div>
+
+        <!-- Добавьте больше карточек брендов по необходимости -->
+    </div>
+</div>
+{% endblock %}

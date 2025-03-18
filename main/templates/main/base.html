@@ -70,18 +70,22 @@
 
         <div class="input-wrapper">
           <div class="search-container">
-            <div class="select-wrapper">
-              <select name="category" class="select-field">
-                <option>Все Категории</option>
-                <option value="1">Категория 1</option>
-                <option value="2">Категория 2</option>
-                <option value="3">Категория 3</option>
-              </select>
-            </div>
-            <input type="search" name="search" placeholder="Ищите здесь..." class="search-field">
-            <button class="search-submit" aria-label="search">
-              <ion-icon name="search-outline" aria-hidden="true"></ion-icon><a>Поиск</a>
-            </button>
+            <form action="{% url 'product:catalog' %}" method="GET" style="display: flex; width: 100%;">
+              <div class="select-wrapper">
+                <select name="category" class="select-field">
+                  <option value="">Все Категории</option>
+                  {% for category in categories %}
+                    <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                      {{ category.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <input type="search" name="name" placeholder="Ищите здесь..." class="search-field" value="{{ request.GET.name }}">
+              <button type="submit" class="search-submit" aria-label="search">
+                <ion-icon name="search-outline" aria-hidden="true"></ion-icon><a>Поиск</a>
+              </button>
+            </form>
           </div>
         </div>
         
@@ -108,9 +112,10 @@
             {% endif %}
           </button>
 
+          {% if user.is_authenticated %}
           <button class="header-action-btn" aria-label="cart item">
             <data class="btn-text" value="0">{{ user.money }} ₸</data>
-
+          {% endif %}
             <ion-icon name="bag-handle-outline" aria-hidden="true" aria-hidden="true"></ion-icon>
 
             <span class="btn-badge">{{ order_count }}</span>
@@ -135,40 +140,32 @@
             </li>
 
             <li>
-              <a href="#shop" class="navbar-link has-after">Блог</a>
-            </li>
-
-            <li>
               <a href="{% url 'about' %}" class="navbar-link has-after">О нас</a>
             </li>
 
             <li>
-              <a href="#blog" class="navbar-link has-after">Страницы</a>
-            </li>
-
-            <li>
-              <a href="#blog" class="navbar-link has-after">Бренды</a>
+              <a href="{% url 'brands' %}" class="navbar-link has-after">Бренды</a>
             </li>
 
           </ul>
           <ul class="nav-icons">
               <li>
-              <a href="#" class="nav-icon">
+              <a href="https://www.facebook.com" class="nav-icon">
                 <img src="{% static 'main/assets/svg/layout/facebook.svg' %}" alt="facebook">
               </a>
               </li>
               <li>
-              <a href="#" class="nav-icon">
+              <a href="https://www.twitter.com" class="nav-icon">
                 <img src="{% static 'main/assets/svg/layout/twitter.svg' %}" alt="twitter">
               </a>
               </li>
               <li>
-              <a href="#" class="nav-icon">
+              <a href="https://www.instagram.com" class="nav-icon">
                 <img src="{% static 'main/assets/svg/layout/instagram.svg' %}" alt="instagram">
               </a>
               </li>
               <li>
-              <a href="#" class="nav-icon">
+              <a href="https://www.youtube.com" class="nav-icon">
                 <img src="{% static 'main/assets/svg/layout/youtube.svg' %}" alt="youtube">
                 
               </a>
@@ -218,20 +215,14 @@
           <a href="{% url 'product:catalog' %}" class="navbar-link has-after">Магазин</a>
         </li>
 
-        <li>
-          <a href="#shop" class="navbar-link has-after">Блог</a>
-        </li>
 
         <li>
           <a href="{% url 'about' %}" class="navbar-link has-after">О нас</a>
         </li>
 
+  
         <li>
-          <a href="#blog" class="navbar-link has-after">Страницы</a>
-        </li>
-
-        <li>
-          <a href="#blog" class="navbar-link has-after">Бренды</a>
+          <a href="{% url 'brands' %}" class="navbar-link has-after">Бренды</a>
         </li>
 
       </ul>

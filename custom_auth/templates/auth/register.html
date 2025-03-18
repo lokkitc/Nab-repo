@@ -6,22 +6,28 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-
-  <form method="post">
-    <div class="form-error">{{ form.non_field_errors }}</div>
-    {% csrf_token %}
-    {% for f in form %}
-    <div class="form-group-lol">
-      <label for="{{ f.id_for_label }}">{{ f.label }}</label>
-      {{ f }}
-      <div class="form-error">{{ f.errors }}</div>
+<div class="checkout-container">
+  <h1>Регистрация</h1>
+  
+  <div class="checkout-section">
+    <div class="section-header">
+      <span class="section-number">1</span>
+      <h2>Создание аккаунта</h2>
     </div>
-    {% endfor %}
-    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-  </form>
 
+    <form method="post" class="contact-form">
+      <div class="form-error">{{ form.non_field_errors }}</div>
+      {% csrf_token %}
+      {% for f in form %}
+      <div class="form-group-lol">
+        <label for="{{ f.id_for_label }}">{{ f.label }}</label>
+        {{ f }}
+        <div class="form-error">{{ f.errors }}</div>
+      </div>
+      {% endfor %}
+      <button type="submit" class="primary-button">Зарегистрироваться</button>
+    </form>
+  </div>
 </div>
-
 {% endblock %}
 

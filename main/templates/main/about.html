@@ -1,7 +1,103 @@
 {% extends 'main/base.html' %}
 
-{% block content %}
 
+{% load static %}
+
+{% block css_files %}
+<link rel="stylesheet" href="{% static 'main/css/about.css' %}">
 {% endblock %}
 
+{% block content %}
+<div class="about-container">
+    <section class="hero-section">
+        <h1>О нашем магазине</h1>
+        <p class="subtitle">Ваш надежный партнер в мире техники</p>
+    </section>
 
+    <section class="mission-section">
+        <div class="mission-content">
+            <h2>Наша миссия</h2>
+            <p>Предоставлять нашим клиентам высококачественную технику и профессиональное обслуживание, делая современные технологии доступными для каждого.</p>
+        </div>
+    </section>
+
+    <section class="advantages-section">
+        <h2>Почему выбирают нас</h2>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Качество</h3>
+                <p>Только проверенные бренды и оригинальная продукция</p>
+            </div>
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <h3>Доставка</h3>
+                <p>Быстрая доставка по всему Казахстану</p>
+            </div>
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Поддержка</h3>
+                <p>Профессиональная консультация и помощь в выборе</p>
+            </div>
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Гарантия</h3>
+                <p>Официальная гарантия на всю продукцию</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <h2>Наша команда</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <img src="{% static 'main/assets/img/member1.jpg' %}" alt="Член команды">
+                <h3>Тәлімбек Бекзат</h3>
+                <p>Работяга</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'main/assets/img/member2.webp' %}" alt="Член команды">
+                <h3>Жалбызбай Нүркен</h3>
+                <p>Руководитель</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'main/assets/img/member3.jpeg' %}" alt="Член команды">
+                <h3>Нурбек Али</h3>
+                <p>Технический специалист</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <h2>Свяжитесь с нами</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>ул. Примерная 123, г. Алматы</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <p>+7 (777) 123-45-67</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>info@nabtechshop.kz</p>
+                </div>
+            </div>
+            <div class="contact-map">
+                <!-- Здесь можно добавить карту -->
+                <div class="map-placeholder">Карта проезда</div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

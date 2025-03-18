@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
                        {% if not product.is_in_stock %}disabled{% endif %}>
                 <button class="quantity-btn plus" type="button">+</button>
             </div>
-            <button class="btn-buy-now" {% if not product.is_in_stock %}disabled{% endif %}>Купить сейчас</button>
             <button class="btn-add-cart" 
                     {% if not product.is_in_stock %}disabled{% endif %} 
                     data-product-id="{{ product.id }}"
@@ -176,16 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
 
-        <div class="product-actions">
-            <button class="btn-favorite">
-                <img src="{% static 'product/assets/svg/product/favorite.svg' %}" alt="В избранное">
-                <span>В избранное</span>
-            </button>
-            <button class="btn-share">
-                <img src="{% static 'product/assets/svg/product/share.svg' %}" alt="Поделиться">
-                <span>Поделиться</span>
-            </button>
-        </div>
     </div>
 </main>
 
